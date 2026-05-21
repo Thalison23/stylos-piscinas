@@ -2493,6 +2493,12 @@
   }
 
   async function enviarPedido() {
+    // Defense-in-depth: bloqueia mesmo se alguem driblar o disabled do botao
+    if (!Array.isArray(carrinho) || carrinho.length === 0) {
+      alert('Adicione ao menos um produto ao carrinho antes de finalizar.');
+      return;
+    }
+
     const nome = sanitizar(document.getElementById('form-nome').value, 80);
     const telefone = sanitizarTelefone(document.getElementById('form-telefone').value);
     const endereco = sanitizar(document.getElementById('form-endereco').value, 200);
@@ -2544,7 +2550,7 @@
         }).toString()
       });
     } catch (e) {
-      console.warn('Netlify Forms falhou (ok em dev local):', e);
+      /* falha silenciosa em dev local; em prod o Netlify aceita o POST */
     }
 
     // 2) Gera nº do pedido + PDF cupom
@@ -2554,7 +2560,6 @@
       pdfBlobPendente = blob;
       pdfFilenamePendente = filename;
     } catch (e) {
-      console.error('Erro ao gerar PDF:', e);
       alert('Erro ao gerar o cupom em PDF. Seu pedido será enviado pelo WhatsApp em texto.');
       pdfBlobPendente = null;
     }
@@ -2604,7 +2609,7 @@
           fecharSucesso();
           return;
         } catch (e) {
-          if (e.name !== 'AbortError') console.warn('Share falhou, indo pra fallback:', e);
+          /* AbortError = usuario cancelou; outros erros: cai no fallback silencioso abaixo */
           // se cancelar ou falhar, segue pro fallback
         }
       }
