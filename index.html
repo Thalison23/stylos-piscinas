@@ -2459,22 +2459,24 @@
      ENVIO DO PEDIDO — Netlify Forms + WhatsApp + CRM
      ============================================ */
   function montarMensagemWhatsApp(dados, numPedido, cupomUrl) {
+    // Usa apenas emojis basicos (1 codepoint) que renderizam em qualquer
+    // versao de Android/iOS/WhatsApp. Evita ZWJ sequences e emojis novas.
     let msg = `Olá! Gostaria de finalizar este pedido com a Stylos Piscinas.\n\n`;
-    msg += `🏠 *Pedido ${numPedido} - Stylos*\n\n`;
-    msg += `👤 *Cliente:* ${dados.nome}\n`;
-    msg += `📱 *WhatsApp:* ${dados.telefone}\n`;
-    msg += `📍 *Endereço:* ${dados.endereco}\n`;
-    msg += `🏷️ *Tipo:* ${dados.grupo}\n`;
-    msg += `💳 *Forma de pagamento:* ${dados.pagamento}\n\n`;
-    msg += `📦 *Pedido:*\n`;
+    msg += `*Pedido ${numPedido} - Stylos*\n\n`;
+    msg += `*Cliente:* ${dados.nome}\n`;
+    msg += `*WhatsApp:* ${dados.telefone}\n`;
+    msg += `*Endereço:* ${dados.endereco}\n`;
+    msg += `*Tipo:* ${dados.grupo}\n`;
+    msg += `*Pagamento:* ${dados.pagamento}\n\n`;
+    msg += `*Produtos:*\n`;
     carrinho.forEach((item, i) => {
-      msg += `${i+1}. ${item.nome} — ${item.qtd}x — ${formatBRL(item.preco * item.qtd)}\n`;
+      msg += `${i+1}. ${item.nome} - ${item.qtd}x - ${formatBRL(item.preco * item.qtd)}\n`;
     });
     const total = carrinho.reduce((s, c) => s + (c.preco * c.qtd), 0);
-    msg += `\n💰 *Total:* ${formatBRL(total)}\n`;
-    if (dados.observacoes) msg += `\n📝 *Observações:*\n${dados.observacoes}\n`;
+    msg += `\n*Total: ${formatBRL(total)}*\n`;
+    if (dados.observacoes) msg += `\n*Observações:*\n${dados.observacoes}\n`;
     if (cupomUrl) {
-      msg += `\n📎 *Cupom PDF:*\n${cupomUrl}\n`;
+      msg += `\n*Cupom PDF (clique para baixar):*\n${cupomUrl}\n`;
     }
     msg += `\nAguardo a confirmação do pedido. Obrigado!`;
     return msg;

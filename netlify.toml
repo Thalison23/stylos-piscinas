@@ -1,5 +1,10 @@
 [build]
   publish = "."
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"
+  external_node_modules = ["@netlify/blobs"]
 
 # Força HTTPS em qualquer requisição HTTP (defense-in-depth além do HSTS)
 [[redirects]]
