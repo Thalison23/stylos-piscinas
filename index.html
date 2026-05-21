@@ -282,9 +282,11 @@
     pointer-events: none;
   }
 
+  /* Performance: slide-1 carrega imediato (preload no head), slides 2 e 3
+     so ganham a imagem apos window.load (economiza ~480KB no first-paint) */
   .slide-1::before { background-image: url('carrossel.webp'); }
-  .slide-2::before { background-image: url('carrossel2.webp'); }
-  .slide-3::before { background-image: url('carrossel3.webp'); }
+  .slide-2.bg-loaded::before { background-image: url('carrossel2.webp'); }
+  .slide-3.bg-loaded::before { background-image: url('carrossel3.webp'); }
 
   .slide-content {
     max-width: 680px;
@@ -1669,7 +1671,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
         integrity="sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNTlrdUmTzrDgektczlKNRRhy5X5AAOnx5S09ydFYWWNSfcEqDTTHgtNA=="
         crossorigin="anonymous"
-        referrerpolicy="no-referrer"></script>
+        referrerpolicy="no-referrer"
+        defer></script>
 </head>
 <body>
 
@@ -3062,6 +3065,26 @@
       input.focus();
       renderProdutos();
     });
+  })();
+
+  /* ============================================
+     LAZY LOAD slides 2 e 3 do hero (apos primeiro paint)
+     Economiza ~480KB no carregamento inicial.
+     ============================================ */
+  (function(){
+    function carregarSlidesRestantes() {
+      document.querySelectorAll('.slide-2, .slide-3').forEach(function(el){
+        el.classList.add('bg-loaded');
+      });
+    }
+    if (document.readyState === 'complete') {
+      // se ja carregou, espera 200ms pra nao competir com LCP
+      setTimeout(carregarSlidesRestantes, 200);
+    } else {
+      window.addEventListener('load', function(){
+        setTimeout(carregarSlidesRestantes, 200);
+      });
+    }
   })();
 
   /* ============================================

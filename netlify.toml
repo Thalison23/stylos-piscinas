@@ -52,6 +52,16 @@
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
+[[headers]]
+  for = "/*.webp"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/imagens/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
 # Cupons em PDF servidos pela function (cache longo, ja imutaveis por design)
 [[headers]]
   for = "/cupom/*"
