@@ -921,6 +921,54 @@
   .slide-cta-secondary:hover { background: transparent; color: white; transform: translateY(-2px); }
 
 
+  /* ===== MARCAS PARCEIRAS (logo wall premium) ===== */
+  .marcas {
+    background: white;
+    padding: 36px 20px;
+    border-top: 1px solid #EBF4FA;
+    border-bottom: 1px solid #EBF4FA;
+  }
+  .marcas-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .marcas-titulo {
+    font-size: 12px;
+    font-weight: 700;
+    color: #94a3b8;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 22px;
+  }
+  .marcas-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 24px;
+    align-items: center;
+    justify-items: center;
+  }
+  .marca-item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+  }
+  .marca-item img {
+    max-width: 100%;
+    max-height: 56px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    filter: grayscale(1) opacity(0.65);
+    transition: filter 0.3s ease, transform 0.3s ease;
+  }
+  .marca-item:hover img {
+    filter: grayscale(0) opacity(1);
+    transform: scale(1.05);
+  }
+
   /* ===== DIFERENCIAIS (badges sob o hero) ===== */
   .diferenciais {
     background: white;
@@ -1530,6 +1578,13 @@
     .wa-float { width: 52px; height: 52px; font-size: 24px; bottom: 16px; right: 16px; box-shadow: 0 6px 18px rgba(37,211,102,0.4); }
     .wa-float-label { display: none; }
 
+    /* MARCAS: 3x2 no mobile (em vez de 6 amassadas) */
+    .marcas { padding: 24px 16px; }
+    .marcas-titulo { font-size: 11px; letter-spacing: 1.5px; margin-bottom: 16px; }
+    .marcas-grid { grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .marca-item { padding: 4px; }
+    .marca-item img { max-height: 44px; filter: grayscale(1) opacity(0.75); }
+
     /* CARRINHO mobile premium estilo bottom-sheet feel */
     .carrinho { width: 100%; max-width: 100vw; right: -100%; }
     .carrinho-header { padding: 14px 16px; position: sticky; top: 0; }
@@ -1679,6 +1734,21 @@
     <div class="dif-item">
       <div class="dif-icon">💬</div>
       <div class="dif-text">Compra rápida pelo WhatsApp<span>Atendimento ágil e sem complicação direto pelo WhatsApp.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== MARCAS PARCEIRAS (trust signal) ===== -->
+<section class="marcas" aria-label="Marcas que trabalhamos">
+  <div class="marcas-container">
+    <p class="marcas-titulo">Trabalhamos com as melhores marcas do mercado</p>
+    <div class="marcas-grid">
+      <div class="marca-item"><img src="imagens/hth.webp" alt="HTH" loading="lazy" width="160" height="80"></div>
+      <div class="marca-item"><img src="imagens/qclor.webp" alt="Q Clor" loading="lazy" width="160" height="80"></div>
+      <div class="marca-item"><img src="imagens/clorup.webp" alt="Clor Up" loading="lazy" width="160" height="80"></div>
+      <div class="marca-item"><img src="imagens/hisdroall.webp" alt="Hidroall" loading="lazy" width="160" height="80"></div>
+      <div class="marca-item"><img src="imagens/sodramar.webp" alt="Sodramar" loading="lazy" width="160" height="80"></div>
+      <div class="marca-item"><img src="imagens/netuno.webp" alt="Netuno" loading="lazy" width="160" height="80"></div>
     </div>
   </div>
 </section>
