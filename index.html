@@ -1866,9 +1866,8 @@
     <div class="sucesso-icon">✓</div>
     <h2 id="sucessoTitulo">Pedido pronto!</h2>
     <p>
-      Ao clicar abaixo, o <strong>WhatsApp abre com a mensagem completa do pedido</strong>
-      pronta pra enviar. O cupom em PDF é salvo no seu dispositivo — você pode anexar
-      depois na conversa, se quiser.
+      O <strong>WhatsApp vai abrir com a mensagem completa do pedido</strong>,
+      incluindo o link do cupom em PDF. É só tocar em enviar.
     </p>
     <div class="sucesso-acoes">
       <button class="btn-sucesso btn-wa" onclick="abrirWhatsApp()">
@@ -2459,24 +2458,25 @@
   /* ============================================
      ENVIO DO PEDIDO — Netlify Forms + WhatsApp + CRM
      ============================================ */
-  function montarMensagemWhatsApp(dados, numPedido) {
+  function montarMensagemWhatsApp(dados, numPedido, cupomUrl) {
     let msg = `Olá! Gostaria de finalizar este pedido com a Stylos Piscinas.\n\n`;
-    msg += `*Pedido:* ${numPedido}\n\n`;
-    msg += `*Cliente:*\n`;
-    msg += `Nome: ${dados.nome}\n`;
-    msg += `WhatsApp: ${dados.telefone}\n`;
-    msg += `Endereço: ${dados.endereco}\n`;
-    msg += `Tipo: ${dados.grupo}\n`;
-    msg += `Forma de pagamento: ${dados.pagamento}\n\n`;
-    msg += `*Produtos:*\n`;
+    msg += `🏠 *Pedido ${numPedido} - Stylos*\n\n`;
+    msg += `👤 *Cliente:* ${dados.nome}\n`;
+    msg += `📱 *WhatsApp:* ${dados.telefone}\n`;
+    msg += `📍 *Endereço:* ${dados.endereco}\n`;
+    msg += `🏷️ *Tipo:* ${dados.grupo}\n`;
+    msg += `💳 *Forma de pagamento:* ${dados.pagamento}\n\n`;
+    msg += `📦 *Pedido:*\n`;
     carrinho.forEach((item, i) => {
       msg += `${i+1}. ${item.nome} — ${item.qtd}x — ${formatBRL(item.preco * item.qtd)}\n`;
     });
     const total = carrinho.reduce((s, c) => s + (c.preco * c.qtd), 0);
-    msg += `\n*Total:* ${formatBRL(total)}\n`;
-    if (dados.observacoes) msg += `\n*Observações:* ${dados.observacoes}\n`;
-    msg += `\n_O cupom em PDF foi salvo no meu dispositivo e posso anexar se precisar._\n`;
-    msg += `\nAguardo confirmação do pedido. Obrigado!`;
+    msg += `\n💰 *Total:* ${formatBRL(total)}\n`;
+    if (dados.observacoes) msg += `\n📝 *Observações:*\n${dados.observacoes}\n`;
+    if (cupomUrl) {
+      msg += `\n📎 *Cupom PDF:*\n${cupomUrl}\n`;
+    }
+    msg += `\nAguardo a confirmação do pedido. Obrigado!`;
     return msg;
   }
 
@@ -2741,7 +2741,7 @@
     btn.disabled = true;
     document.getElementById('btnLabel').textContent = 'Gerando cupom...';
 
-    // 1) Gera nº do pedido + PDF cupom PRIMEIRO (pra anexar no Netlify Form)
+    // 1) Gera nº do pedido + PDF cupom PRIMEIRO
     const numPedido = 'STY' + Date.now().toString().slice(-6);
     try {
       const { blob, filename } = gerarPDFCupom(dados, numPedido);
@@ -2752,13 +2752,31 @@
       pdfBlobPendente = null;
     }
 
-    // 2) Monta mensagem do WhatsApp (texto)
-    mensagemPendenteWA = montarMensagemWhatsApp(dados, numPedido);
+    // 2) Upload do PDF pro Netlify Blobs -> pega URL publica pra incluir no WhatsApp
+    let cupomUrlPublica = '';
+    if (pdfBlobPendente) {
+      document.getElementById('btnLabel').textContent = 'Subindo cupom...';
+      try {
+        const fdCupom = new FormData();
+        const pdfFile = new File([pdfBlobPendente], pdfFilenamePendente, { type: 'application/pdf' });
+        fdCupom.append('pdf', pdfFile);
+        fdCupom.append('numero', numPedido);
+        const resp = await fetch('/api/upload-cupom', { method: 'POST', body: fdCupom });
+        if (resp.ok) {
+          const data = await resp.json();
+          cupomUrlPublica = data.url || '';
+        }
+      } catch (e) {
+        /* falha silenciosa - se nao conseguir URL publica, mensagem vai sem link */
+      }
+    }
 
-    // 3) Envia pro Netlify Forms COM o PDF anexado
-    //    O dono recebe email com link do PDF + todos os dados do pedido
-    //    Tambem fica registrado no painel Netlify -> Forms -> Submissions
+    // 3) Monta mensagem do WhatsApp (texto + link do cupom se disponivel)
+    mensagemPendenteWA = montarMensagemWhatsApp(dados, numPedido, cupomUrlPublica);
+
+    // 4) Envia pro Netlify Forms COM o PDF anexado (notificacao por email pro dono)
     try {
+      document.getElementById('btnLabel').textContent = 'Enviando pedido...';
       const fd = new FormData();
       fd.append('form-name', 'pedido-stylos');
       fd.append('numero-pedido', numPedido);
@@ -2770,6 +2788,7 @@
       fd.append('observacoes', observacoes);
       fd.append('pedido', pedidoTexto);
       fd.append('valor-estimado', formatBRL(total));
+      if (cupomUrlPublica) fd.append('cupom-url', cupomUrlPublica);
       if (pdfBlobPendente) {
         const pdfFile = new File([pdfBlobPendente], pdfFilenamePendente, { type: 'application/pdf' });
         fd.append('cupom-pdf', pdfFile);
@@ -2808,32 +2827,13 @@
   }
 
   async function abrirWhatsApp() {
-    // PRIMEIRO: baixa o PDF localmente (em qualquer device).
-    // O usuario tem o cupom pra anexar se quiser; nao depende do share que
-    // o WhatsApp Android descarta o texto quando vem arquivo junto.
-    if (pdfBlobPendente) {
-      const url = URL.createObjectURL(pdfBlobPendente);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = pdfFilenamePendente;
-      a.style.display = 'none';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      setTimeout(() => URL.revokeObjectURL(url), 4000);
-    }
-
-    // SEGUNDO: abre o WhatsApp SEMPRE com a mensagem completa via wa.me
-    // Funciona em iOS, Android, WA Web. Texto sempre chega 100%.
+    // Mensagem do pedido (com link do cupom embutido) abre direto no WhatsApp.
+    // O cliente nao precisa baixar PDF separado: o link 'Cupom PDF' na mensagem
+    // ja leva pro arquivo hospedado no Netlify Blobs.
     const waUrl = `https://wa.me/${WHATSAPP_NUMERO}?text=${encodeURIComponent(mensagemPendenteWA)}`;
-    // pequeno delay deixa o download iniciar antes de abrir aba do WA
-    setTimeout(() => {
-      window.open(waUrl, '_blank', 'noopener,noreferrer');
-      fecharSucesso();
-    }, 350);
-
-    // toast informativo de que o PDF foi salvo (mobile-friendly)
-    if (pdfBlobPendente) mostrarToast('Pedido enviado! PDF salvo no celular.');
+    window.open(waUrl, '_blank', 'noopener,noreferrer');
+    mostrarToast('Pedido aberto no WhatsApp');
+    fecharSucesso();
   }
 
   function baixarSomentePDF() {
