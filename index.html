@@ -260,7 +260,7 @@
     overflow: hidden;
   }
 
-  /* IMAGEM de fundo nitida (agora que sao novas e leves) com leve saturacao */
+  /* IMAGEM de fundo nitida com leve saturacao premium */
   .slide::before {
     content: '';
     position: absolute;
@@ -268,16 +268,21 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    filter: saturate(1.08);
+    filter: saturate(1.05) contrast(1.02);
     z-index: 0;
   }
 
-  /* OVERLAY refinado: leve no topo, gradiente sutil pra baixo (legibilidade do texto) */
+  /* OVERLAY minimalista cinematografico:
+     - gradiente bottom-up suave pra legibilidade do texto
+     - vinheta radial nas bordas pra profundidade premium
+     - cores azul-marinho escuro (mais sofisticado que azul medio) */
   .slide::after {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, rgba(0,20,60,0.22) 0%, rgba(0,30,80,0.40) 60%, rgba(0,20,60,0.58) 100%);
+    background:
+      radial-gradient(ellipse 110% 80% at center, transparent 40%, rgba(0,15,40,0.35) 100%),
+      linear-gradient(180deg, rgba(0,15,40,0.10) 0%, rgba(0,20,50,0.32) 65%, rgba(0,15,40,0.55) 100%);
     z-index: 1;
     pointer-events: none;
   }
@@ -294,22 +299,24 @@
     position: relative;
   }
   .slide h1, .slide h2 {
-    font-size: 44px;
-    margin-bottom: 12px;
-    font-weight: 800;
-    line-height: 1.1;
-    letter-spacing: -0.5px;
-    text-shadow: 0 2px 16px rgba(0,0,0,0.35);
+    font-size: 46px;
+    margin-bottom: 14px;
+    font-weight: 700;
+    line-height: 1.08;
+    letter-spacing: -0.8px;
+    text-shadow: 0 1px 12px rgba(0,0,0,0.25);
   }
   .slide p {
     font-size: 16px;
-    margin-bottom: 22px;
-    opacity: 0.92;
-    max-width: 480px;
+    margin-bottom: 24px;
+    opacity: 0.88;
+    max-width: 440px;
     margin-left: auto;
     margin-right: auto;
-    line-height: 1.45;
+    line-height: 1.5;
     font-weight: 400;
+    letter-spacing: 0.1px;
+    text-shadow: 0 1px 8px rgba(0,0,0,0.22);
   }
 
   .slide-cta {
