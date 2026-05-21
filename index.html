@@ -626,13 +626,15 @@
 
   .form-row input, .form-row textarea, .form-row select {
     width: 100%;
-    padding: 8px 12px;
+    padding: 10px 12px;
     border: 1px solid #E0F2FE;
-    border-radius: 8px;
-    font-size: 14px;
+    border-radius: 10px;
+    font-size: 16px; /* >=16px previne zoom automatico no iOS Safari ao focar */
     font-family: inherit;
-    transition: border-color 0.2s;
+    transition: border-color 0.2s, box-shadow 0.2s;
     background: white;
+    -webkit-appearance: none;
+    appearance: none;
   }
 
   .form-row input:focus, .form-row textarea:focus, .form-row select:focus {
@@ -689,6 +691,8 @@
     align-items: center;
     justify-content: center;
     padding: 20px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
   .sucesso-overlay.ativo { display: flex; }
 
@@ -698,6 +702,8 @@
     padding: 32px 24px;
     max-width: 420px;
     width: 100%;
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
     text-align: center;
     box-shadow: 0 20px 60px rgba(0,0,0,0.3);
   }
@@ -1305,6 +1311,26 @@
     /* WA FLUTUANTE compacto */
     .wa-float { width: 52px; height: 52px; font-size: 24px; bottom: 16px; right: 16px; box-shadow: 0 6px 18px rgba(37,211,102,0.4); }
     .wa-float-label { display: none; }
+
+    /* CARRINHO mobile mais respiravel */
+    .carrinho { width: 100%; max-width: 100vw; right: -100%; }
+    .carrinho-header { padding: 14px 16px; }
+    .carrinho-header h3 { font-size: 17px; }
+    .fechar-btn { font-size: 28px; padding: 2px 8px; }
+    .carrinho-scroll { padding: 12px 16px 20px; }
+
+    /* MODAL sucesso compactado pro mobile */
+    .sucesso-card { padding: 24px 18px; border-radius: 14px; }
+    .sucesso-icon { width: 66px; height: 66px; font-size: 36px; margin-bottom: 12px; }
+    .sucesso-card h2 { font-size: 20px; margin-bottom: 6px; }
+    .sucesso-card p { font-size: 13.5px; margin-bottom: 16px; line-height: 1.5; }
+    .btn-sucesso, .btn-wa, .btn-baixar { padding: 12px 22px; font-size: 14px; }
+
+    /* FORM checkout: respiro confortavel */
+    .form-row { margin-bottom: 12px; }
+    .form-row label { font-size: 10.5px; }
+    .form-row input, .form-row textarea, .form-row select { padding: 11px 12px; }
+    .form-row textarea { min-height: 60px; }
   }
 
   /* ===== Telas muito pequenas (≤360px - iPhone SE, Androids pequenos) ===== */
@@ -1574,7 +1600,7 @@
       </div>
       <div class="form-row">
         <label for="form-telefone">WhatsApp *</label>
-        <input type="tel" id="form-telefone" placeholder="(71) 99999-9999" required maxlength="20" autocomplete="tel" inputmode="tel" pattern="[\d\s\(\)\-\+]{8,20}">
+        <input type="tel" id="form-telefone" placeholder="(75) 98207-4073" required maxlength="20" autocomplete="tel" inputmode="tel" pattern="[\d\s\(\)\-\+]{10,20}">
       </div>
       <div class="form-row">
         <label for="form-endereco">Endereço de entrega *</label>
@@ -2394,33 +2420,60 @@
 
   function sanitizar(s, max) {
     if (!s) return '';
-    // remove tags HTML, scripts e caracteres de controle; limita tamanho
+    // remove tags HTML, scripts, caracteres de controle, data:/javascript: URIs e expressões CSS perigosas
     return String(s)
       .replace(/<[^>]*>/g, '')
       .replace(/[\x00-\x1F\x7F]/g, '')
       .replace(/javascript:/gi, '')
+      .replace(/data:/gi, '')
+      .replace(/vbscript:/gi, '')
+      .replace(/on\w+\s*=/gi, '')
+      .replace(/expression\s*\(/gi, '')
       .trim()
       .slice(0, max || 500);
   }
 
+  // Aceita só números (mantém DDI/DDD); usa pra campo de telefone
+  function sanitizarTelefone(s) {
+    if (!s) return '';
+    return String(s).replace(/\D/g, '').slice(0, 13);
+  }
+
+  // Valida telefone brasileiro: 10 dígitos (DDD + 8) ou 11 (DDD + 9 móvel)
+  // ou 12-13 com DDI 55 opcional
+  function validarTelefoneBR(num) {
+    if (!num) return false;
+    let n = num.replace(/\D/g, '');
+    if (n.startsWith('55') && (n.length === 12 || n.length === 13)) n = n.slice(2);
+    if (n.length !== 10 && n.length !== 11) return false;
+    const ddd = parseInt(n.slice(0, 2), 10);
+    if (ddd < 11 || ddd > 99) return false;
+    // celular (11 dígitos) precisa começar com 9 no terceiro dígito
+    if (n.length === 11 && n[2] !== '9') return false;
+    return true;
+  }
+
   async function enviarPedido() {
     const nome = sanitizar(document.getElementById('form-nome').value, 80);
-    const telefone = sanitizar(document.getElementById('form-telefone').value, 20);
+    const telefone = sanitizarTelefone(document.getElementById('form-telefone').value);
     const endereco = sanitizar(document.getElementById('form-endereco').value, 200);
     const grupo = sanitizar(document.getElementById('form-grupo').value, 40);
     const pagamento = sanitizar(document.getElementById('form-pagamento').value, 40);
     const observacoes = sanitizar(document.getElementById('form-obs').value, 500);
 
-    if (!nome || nome.length < 2) {
-      alert('Informe seu nome completo.');
+    if (!nome || nome.length < 3 || !nome.includes(' ')) {
+      alert('Informe seu nome completo (nome e sobrenome).');
+      document.getElementById('form-nome').focus();
       return;
     }
-    if (!telefone || telefone.replace(/\D/g, '').length < 8) {
-      alert('Informe um WhatsApp válido com DDD.');
+    if (!validarTelefoneBR(telefone)) {
+      alert('Informe um WhatsApp brasileiro válido com DDD (ex: 75 98207-4073).');
+      document.getElementById('form-telefone').focus();
       return;
     }
-    if (!endereco || endereco.length < 6) {
-      alert('Informe o endereço de entrega.');
+    if (!endereco || endereco.length < 10 || !/\d/.test(endereco)) {
+      alert('Informe o endereço completo de entrega (rua, número e bairro).');
+      document.getElementById('form-endereco').focus();
       return;
     }
     if (!pagamento) {
