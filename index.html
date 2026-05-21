@@ -207,10 +207,10 @@
     font-weight: 700;
   }
 
-  /* ===== HERO ===== */
+  /* ===== HERO premium minimalista ===== */
   .hero {
     position: relative;
-    height: 520px;
+    height: 480px;
     overflow: hidden;
   }
 
@@ -218,7 +218,7 @@
     display: flex;
     width: 100%;
     height: 100%;
-    transition: transform 0.6s ease;
+    transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .slide {
@@ -229,17 +229,50 @@
     justify-content: center;
     color: white;
     text-align: center;
-    padding: 20px;
+    padding: 24px;
     position: relative;
+    /* filtro suave nas fotos para suavizar texto baked nas imagens */
+    background-color: #001E50;
+  }
+  .slide::before {
+    /* overlay azul mais opaco + gradiente sutil = esconde textos do PNG sem chapar */
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgba(0,30,80,0.55) 0%, rgba(0,40,100,0.72) 60%, rgba(0,30,80,0.82) 100%),
+      radial-gradient(ellipse at center, transparent 0%, rgba(0,30,80,0.35) 100%);
+    z-index: 1;
+    pointer-events: none;
   }
 
-  .slide-1 { background: linear-gradient(rgba(0,50,120,0.35), rgba(0,50,120,0.55)), url('carrossel.png') center center / cover no-repeat; }
-  .slide-2 { background: linear-gradient(rgba(0,50,120,0.35), rgba(0,50,120,0.55)), url('carrossel2.png') center center / cover no-repeat; }
-  .slide-3 { background: linear-gradient(rgba(0,50,120,0.35), rgba(0,50,120,0.55)), url('carrossel3.png') center center / cover no-repeat; }
+  .slide-1 { background-image: url('carrossel.png'); background-size: cover; background-position: center; }
+  .slide-2 { background-image: url('carrossel2.png'); background-size: cover; background-position: center; }
+  .slide-3 { background-image: url('carrossel3.png'); background-size: cover; background-position: center; }
 
-  .slide-content { max-width: 760px; z-index: 2; }
-  .slide h1, .slide h2 { font-size: 42px; margin-bottom: 14px; text-shadow: 0 2px 10px rgba(0,0,0,0.3); font-weight: 800; line-height: 1.15; }
-  .slide p { font-size: 18px; margin-bottom: 20px; opacity: 0.95; max-width: 640px; margin-left: auto; margin-right: auto; }
+  .slide-content {
+    max-width: 680px;
+    z-index: 2;
+    position: relative;
+  }
+  .slide h1, .slide h2 {
+    font-size: 44px;
+    margin-bottom: 12px;
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.5px;
+    text-shadow: 0 2px 16px rgba(0,0,0,0.35);
+  }
+  .slide p {
+    font-size: 16px;
+    margin-bottom: 22px;
+    opacity: 0.92;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.45;
+    font-weight: 400;
+  }
 
   .slide-cta {
     background: white;
@@ -257,33 +290,48 @@
 
   .slide-cta:hover { transform: scale(1.05); }
 
+  /* Paginação refinada: pill animado estilo Apple/Stripe */
   .slide-dots {
-    position: absolute; bottom: 20px; left: 50%;
+    position: absolute; bottom: 22px; left: 50%;
     transform: translateX(-50%);
-    display: flex; gap: 10px; z-index: 3;
+    display: flex; gap: 6px; z-index: 3;
+    align-items: center;
   }
-
   .dot {
-    width: 12px; height: 12px; border-radius: 50%;
-    background: rgba(255,255,255,0.5);
+    width: 6px; height: 6px; border-radius: 999px;
+    background: rgba(255,255,255,0.45);
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
+    border: none;
+    padding: 0;
   }
-  .dot.active { background: white; transform: scale(1.3); }
+  .dot.active {
+    background: white;
+    width: 22px;
+  }
 
+  /* Setas discretas estilo premium (border-only, baixa opacidade) */
   .slide-nav {
     position: absolute; top: 50%; transform: translateY(-50%);
-    background: rgba(255,255,255,0.3);
-    color: white; border: none;
-    width: 44px; height: 44px;
+    background: rgba(255,255,255,0.10);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.25);
+    width: 40px; height: 40px;
     border-radius: 50%;
-    font-size: 24px;
+    font-size: 22px; line-height: 1;
     cursor: pointer; z-index: 3;
-    transition: background 0.2s;
+    opacity: 0.55;
+    transition: opacity 0.2s, background 0.2s, transform 0.2s;
   }
-  .slide-nav:hover { background: rgba(255,255,255,0.5); }
-  .slide-prev { left: 20px; }
-  .slide-next { right: 20px; }
+  .slide-nav:hover {
+    opacity: 1;
+    background: rgba(255,255,255,0.22);
+    transform: translateY(-50%) scale(1.06);
+  }
+  .slide-prev { left: 18px; }
+  .slide-next { right: 18px; }
 
   /* ===== BUSCA ===== */
   .busca-wrapper {
@@ -1221,18 +1269,19 @@
     .cart-count { width: 19px; height: 19px; font-size: 11px; }
 
     /* HERO compacto e impactante */
-    .hero { height: 420px; }
-    .slide { padding: 16px; }
-    .slide h1, .slide h2 { font-size: 25px; line-height: 1.12; margin-bottom: 10px; padding: 0 8px; }
-    .slide p { font-size: 14px; line-height: 1.4; margin-bottom: 14px; padding: 0 8px; }
-    .slide-cta-group { gap: 8px; margin-top: 12px; }
+    .hero { height: 400px; }
+    .slide { padding: 18px; }
+    .slide h1, .slide h2 { font-size: 28px; line-height: 1.08; margin-bottom: 10px; padding: 0 6px; letter-spacing: -0.4px; }
+    .slide p { font-size: 14px; line-height: 1.4; margin-bottom: 18px; padding: 0 16px; opacity: 0.9; }
+    .slide-cta-group { gap: 8px; margin-top: 10px; }
     .slide-cta-primary { padding: 12px 22px; font-size: 14px; box-shadow: 0 3px 10px rgba(37,211,102,0.25); }
     .slide-cta-secondary { padding: 10px 18px; font-size: 13px; }
-    .slide-nav { width: 34px; height: 34px; font-size: 16px; }
-    .slide-prev { left: 8px; }
-    .slide-next { right: 8px; }
-    .slide-dots { bottom: 14px; gap: 7px; }
-    .dot { width: 8px; height: 8px; }
+    .slide-nav { width: 32px; height: 32px; font-size: 15px; opacity: 0.45; }
+    .slide-prev { left: 10px; }
+    .slide-next { right: 10px; }
+    .slide-dots { bottom: 16px; gap: 5px; }
+    .dot { width: 5px; height: 5px; }
+    .dot.active { width: 18px; }
 
     /* DIFERENCIAIS: scroll horizontal premium estilo app */
     .diferenciais { padding: 16px 0 14px; }
@@ -1397,9 +1446,9 @@
 
   /* ===== Telas muito pequenas (≤360px - iPhone SE, Androids pequenos) ===== */
   @media (max-width: 360px) {
-    .hero { height: 380px; }
-    .slide h1, .slide h2 { font-size: 22px; }
-    .slide p { font-size: 13px; }
+    .hero { height: 360px; }
+    .slide h1, .slide h2 { font-size: 24px; }
+    .slide p { font-size: 13px; max-width: 280px; }
     .slide-cta-primary { padding: 11px 18px; font-size: 13px; }
     .slide-cta-secondary { padding: 9px 15px; font-size: 12.5px; }
     .secao-titulo { font-size: 20px; }
@@ -1462,8 +1511,8 @@
   <div class="slides" id="slides">
     <div class="slide slide-1">
       <div class="slide-content">
-        <h1>Tudo para manter sua piscina limpa e cristalina</h1>
-        <p>Produtos de qualidade para limpeza, tratamento e manutenção da sua piscina com praticidade e atendimento rápido.</p>
+        <h1>Sua piscina sempre cristalina</h1>
+        <p>Produtos selecionados e atendimento direto pelo WhatsApp.</p>
         <div class="slide-cta-group">
           <a href="https://wa.me/5575982074073?text=Ol%C3%A1%21%20Vim%20pelo%20site%20e%20gostaria%20de%20conhecer%20os%20produtos%20para%20limpeza%20e%20manuten%C3%A7%C3%A3o%20de%20piscina." target="_blank" rel="noopener noreferrer" class="slide-cta-primary">💬 Comprar pelo WhatsApp</a>
           <a href="#produtos" class="slide-cta-secondary">Ver catálogo</a>
@@ -1472,8 +1521,8 @@
     </div>
     <div class="slide slide-2">
       <div class="slide-content">
-        <h2>Atendimento especializado para sua piscina</h2>
-        <p>Ajudamos você a escolher os produtos certos para tratamento, limpeza e manutenção. Atendimento rápido e sem complicação.</p>
+        <h2>Atendimento que entende de piscina</h2>
+        <p>Te ajudamos a escolher o produto certo. Rápido e sem enrolação.</p>
         <div class="slide-cta-group">
           <a href="https://wa.me/5575982074073?text=Ol%C3%A1%21%20Vim%20pelo%20site%20e%20gostaria%20de%20conhecer%20os%20produtos%20para%20limpeza%20e%20manuten%C3%A7%C3%A3o%20de%20piscina." target="_blank" rel="noopener noreferrer" class="slide-cta-primary">💬 Falar com especialista</a>
           <a href="#porque" class="slide-cta-secondary">Por que a Stylos</a>
@@ -1482,10 +1531,10 @@
     </div>
     <div class="slide slide-3">
       <div class="slide-content">
-        <h2>Cloro, algicida, acessórios e muito mais</h2>
-        <p>Linha completa de produtos para deixar sua água sempre cristalina. Veja o catálogo e monte seu pedido pelo WhatsApp.</p>
+        <h2>Linha completa para sua piscina</h2>
+        <p>Cloro, algicida e acessórios. Monte seu pedido em minutos.</p>
         <div class="slide-cta-group">
-          <a href="#produtos" class="slide-cta-primary" style="background:white;color:var(--azul-deep);box-shadow:0 8px 24px rgba(255,255,255,0.3)">Ver Catálogo</a>
+          <a href="#produtos" class="slide-cta-primary">Ver Catálogo</a>
           <a href="https://wa.me/5575982074073?text=Ol%C3%A1%21%20Vim%20pelo%20site%20e%20gostaria%20de%20conhecer%20os%20produtos%20para%20limpeza%20e%20manuten%C3%A7%C3%A3o%20de%20piscina." target="_blank" rel="noopener noreferrer" class="slide-cta-secondary">💬 Falar no WhatsApp</a>
         </div>
       </div>
