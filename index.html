@@ -63,6 +63,10 @@
     --sombra: 0 4px 20px rgba(0, 180, 216, 0.15);
   }
 
+  html, body {
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
   body {
     font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     color: var(--texto);
@@ -1140,7 +1144,18 @@
     .atendimento-titulo { font-size: 24px; }
     .wa-float { width: 54px; height: 54px; font-size: 26px; bottom: 18px; right: 18px; }
     .wa-float-label { display: none; }
-    .footer-grid { padding: 32px 16px 20px; gap: 22px; }
+    .footer-grid {
+      padding: 28px 14px 18px;
+      gap: 18px 14px;
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .footer-col h4 { font-size: 15px; }
+    .footer-col p, .footer-col a { font-size: 13px; }
+    /* Reordenar: linha 1 = [Stylos][Navegação], linha 2 = [Contato][Atendimento] */
+    .footer-col:nth-child(1) { order: 1; }
+    .footer-col:nth-child(4) { order: 2; }
+    .footer-col:nth-child(2) { order: 3; }
+    .footer-col:nth-child(3) { order: 4; }
 
     /* ----- Grids forçadas lado a lado no mobile ----- */
 
@@ -1152,13 +1167,13 @@
     .dif-text { font-size: 11px; line-height: 1.15; }
     .dif-text span { display: none; }
 
-    /* Como Funciona / Produtos para limpeza: 6 cards em linha (ícone + título) */
-    .etapas-grid { grid-template-columns: repeat(6, 1fr); gap: 5px; margin-top: 12px; }
-    .etapa-card { padding: 10px 4px; border-radius: 10px; text-align: center; }
+    /* Como Funciona / Produtos para limpeza: 3 cards em cima, 3 embaixo */
+    .etapas-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 14px; }
+    .etapa-card { padding: 16px 10px; border-radius: 12px; text-align: center; }
     .etapa-card:hover { transform: none; }
-    .etapa-numero { width: 26px; height: 26px; font-size: 12px; margin: 0 auto 6px; }
-    .etapa-titulo { font-size: 10.5px; line-height: 1.15; margin-bottom: 0; }
-    .etapa-desc { display: none; }
+    .etapa-numero { width: 34px; height: 34px; font-size: 15px; margin: 0 auto 10px; }
+    .etapa-titulo { font-size: 13px; line-height: 1.2; margin-bottom: 6px; }
+    .etapa-desc { font-size: 11.5px; line-height: 1.35; }
 
     /* Por que escolher a Stylos: 4 cards em linha */
     .porque-grid { grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 12px; }
