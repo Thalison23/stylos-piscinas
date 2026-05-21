@@ -1284,21 +1284,75 @@
   footer p { font-size: 14px; opacity: 0.9; }
   footer a { color: var(--azul-claro); text-decoration: none; }
 
-  /* ===== TOAST ===== */
+  /* ===== TOAST (top center, sutil) ===== */
   .toast {
     position: fixed;
-    bottom: 30px; left: 50%;
-    transform: translateX(-50%) translateY(100px);
-    background: #2ECC71;
+    top: 80px; left: 50%;
+    transform: translateX(-50%) translateY(-12px);
+    background: rgba(15, 23, 42, 0.92);
     color: white;
-    padding: 14px 24px;
-    border-radius: 30px;
-    font-weight: 700;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-    z-index: 400;
-    transition: transform 0.3s;
+    padding: 10px 18px;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 13.5px;
+    box-shadow: 0 6px 22px rgba(15,23,42,0.18);
+    z-index: 700;
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.25s, opacity 0.25s;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    max-width: 88vw;
+    text-align: center;
   }
-  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .toast::before { content: '✓ '; color: #25D366; font-weight: 800; }
+
+  /* ===== BARRA FIXA MOBILE DO CARRINHO ===== */
+  .cart-bar {
+    position: fixed;
+    bottom: 16px;
+    left: 16px;
+    right: 16px;
+    background: linear-gradient(135deg, var(--azul-deep), var(--azul-escuro));
+    color: white;
+    padding: 14px 18px;
+    border-radius: 16px;
+    box-shadow: 0 8px 28px rgba(0, 119, 182, 0.35);
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    z-index: 950;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    animation: cartBarIn 0.32s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .cart-bar.visible { display: flex; }
+  .cart-bar:hover, .cart-bar:focus-visible { transform: translateY(-2px); }
+  .cart-bar-info { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .cart-bar-qtd { font-size: 12px; opacity: 0.85; font-weight: 600; }
+  .cart-bar-total { font-size: 17px; font-weight: 800; }
+  .cart-bar-cta {
+    font-size: 14px; font-weight: 700;
+    background: rgba(255,255,255,0.15);
+    padding: 9px 16px;
+    border-radius: 999px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  @keyframes cartBarIn {
+    from { transform: translateY(120%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  /* desktop: nao mostra barra (carrinho ja acessivel pelo header) */
+  @media (min-width: 769px) {
+    .cart-bar { display: none !important; }
+  }
+  /* esconde quando carrinho/modal abertos */
+  body.bloqueado .cart-bar { display: none !important; }
+  /* quando cart-bar ativa, sobe o WA float */
+  body.cart-bar-active .wa-float { bottom: 90px; }
 
   /* ===== Micro-animação fade-up premium (sutil) ===== */
   @media (prefers-reduced-motion: no-preference) {
@@ -1460,12 +1514,19 @@
     .wa-float { width: 52px; height: 52px; font-size: 24px; bottom: 16px; right: 16px; box-shadow: 0 6px 18px rgba(37,211,102,0.4); }
     .wa-float-label { display: none; }
 
-    /* CARRINHO mobile mais respiravel */
+    /* CARRINHO mobile premium estilo bottom-sheet feel */
     .carrinho { width: 100%; max-width: 100vw; right: -100%; }
-    .carrinho-header { padding: 14px 16px; }
+    .carrinho-header { padding: 14px 16px; position: sticky; top: 0; }
     .carrinho-header h3 { font-size: 17px; }
     .fechar-btn { font-size: 28px; padding: 2px 8px; }
-    .carrinho-scroll { padding: 12px 16px 20px; }
+    .carrinho-scroll { padding: 12px 16px 24px; }
+    /* footer do carrinho sticky no rodape (acesso ao botao Finalizar sempre) */
+    .carrinho-footer {
+      position: sticky;
+      bottom: 0;
+      padding: 12px 16px 18px;
+      padding-bottom: max(18px, env(safe-area-inset-bottom));
+    }
 
     /* MODAL sucesso compactado pro mobile */
     .sucesso-card { padding: 24px 18px; border-radius: 14px; }
@@ -1803,13 +1864,13 @@
     <div class="sucesso-icon">✓</div>
     <h2 id="sucessoTitulo">Pedido pronto!</h2>
     <p>
-      Seu cupom em <strong>PDF</strong> foi gerado.<br>
-      No celular, ao clicar abaixo, você compartilha o PDF diretamente no WhatsApp.<br>
-      No computador, o PDF é baixado e você anexa o arquivo na conversa.
+      Ao clicar abaixo, o <strong>WhatsApp abre com a mensagem completa do pedido</strong>
+      pronta pra enviar. O cupom em PDF é salvo no seu dispositivo — você pode anexar
+      depois na conversa, se quiser.
     </p>
     <div class="sucesso-acoes">
       <button class="btn-sucesso btn-wa" onclick="abrirWhatsApp()">
-        💬 Enviar pedido (PDF) no WhatsApp
+        💬 Enviar pedido no WhatsApp
       </button>
     </div>
   </div>
@@ -1873,6 +1934,15 @@
     © 2026 Stylos Piscinas. Todos os direitos reservados.
   </div>
 </footer>
+
+<!-- ===== BARRA FIXA MOBILE DO CARRINHO (so aparece com itens) ===== -->
+<div class="cart-bar" id="cartBar" role="button" tabindex="0" aria-label="Abrir pedido" onclick="abrirCarrinho()">
+  <div class="cart-bar-info">
+    <span class="cart-bar-qtd" id="cartBarQtd">0 itens</span>
+    <span class="cart-bar-total" id="cartBarTotal">R$ 0,00</span>
+  </div>
+  <span class="cart-bar-cta">Ver pedido →</span>
+</div>
 
 <!-- ===== WHATSAPP FLUTUANTE ===== -->
 <a href="https://wa.me/5575982074073?text=Ol%C3%A1%21%20Vim%20pelo%20site%20e%20gostaria%20de%20conhecer%20os%20produtos%20para%20limpeza%20e%20manuten%C3%A7%C3%A3o%20de%20piscina."
@@ -2346,8 +2416,24 @@
   }
 
   function atualizarBadge() {
-    const total = carrinho.reduce((s, c) => s + c.qtd, 0);
-    document.getElementById('cartCount').textContent = total;
+    const totalItens = carrinho.reduce((s, c) => s + c.qtd, 0);
+    document.getElementById('cartCount').textContent = totalItens;
+    atualizarCartBar(totalItens);
+  }
+
+  function atualizarCartBar(totalItens) {
+    const bar = document.getElementById('cartBar');
+    if (!bar) return;
+    if (totalItens > 0) {
+      const totalValor = carrinho.reduce((s, c) => s + (c.preco * c.qtd), 0);
+      document.getElementById('cartBarQtd').textContent = totalItens + (totalItens === 1 ? ' item' : ' itens');
+      document.getElementById('cartBarTotal').textContent = formatBRL(totalValor);
+      bar.classList.add('visible');
+      document.body.classList.add('cart-bar-active');
+    } else {
+      bar.classList.remove('visible');
+      document.body.classList.remove('cart-bar-active');
+    }
   }
 
   function abrirCarrinho() {
@@ -2372,22 +2458,23 @@
      ENVIO DO PEDIDO — Netlify Forms + WhatsApp + CRM
      ============================================ */
   function montarMensagemWhatsApp(dados, numPedido) {
-    let msg = `Olá! Gostaria de finalizar este pedido com a Stylos Piscinas. Seguem os dados e produtos selecionados.\n\n`;
-    msg += `*🏊 Pedido ${numPedido} - ${NOME_LOJA}*\n\n`;
-    msg += `👤 *Cliente:* ${dados.nome}\n`;
-    msg += `📱 *WhatsApp:* ${dados.telefone}\n`;
-    msg += `📍 *Endereço:* ${dados.endereco}\n`;
-    msg += `🏷️ *Tipo:* ${dados.grupo}\n`;
-    msg += `💳 *Forma de pagamento:* ${dados.pagamento}\n\n`;
-    msg += `📦 *Pedido:*\n`;
+    let msg = `Olá! Gostaria de finalizar este pedido com a Stylos Piscinas.\n\n`;
+    msg += `*Pedido:* ${numPedido}\n\n`;
+    msg += `*Cliente:*\n`;
+    msg += `Nome: ${dados.nome}\n`;
+    msg += `WhatsApp: ${dados.telefone}\n`;
+    msg += `Endereço: ${dados.endereco}\n`;
+    msg += `Tipo: ${dados.grupo}\n`;
+    msg += `Forma de pagamento: ${dados.pagamento}\n\n`;
+    msg += `*Produtos:*\n`;
     carrinho.forEach((item, i) => {
-      msg += `${i+1}. [${item.id}] ${item.nome} — ${item.qtd}x = ${formatBRL(item.preco * item.qtd)}\n`;
+      msg += `${i+1}. ${item.nome} — ${item.qtd}x — ${formatBRL(item.preco * item.qtd)}\n`;
     });
     const total = carrinho.reduce((s, c) => s + (c.preco * c.qtd), 0);
-    msg += `\n💰 *Total:* ${formatBRL(total)}\n`;
-    if (dados.observacoes) msg += `\n📝 *Observações:* ${dados.observacoes}\n`;
-    msg += `\n📎 Cupom em PDF anexado.`;
-    msg += `\n\nAguardo a confirmação e as condições de pagamento. Obrigado!`;
+    msg += `\n*Total:* ${formatBRL(total)}\n`;
+    if (dados.observacoes) msg += `\n*Observações:* ${dados.observacoes}\n`;
+    msg += `\n_O cupom em PDF foi salvo no meu dispositivo e posso anexar se precisar._\n`;
+    msg += `\nAguardo confirmação do pedido. Obrigado!`;
     return msg;
   }
 
@@ -2711,41 +2798,32 @@
   }
 
   async function abrirWhatsApp() {
-    // Estratégia A: Mobile com Web Share API → compartilha PDF direto pro WhatsApp
-    if (pdfBlobPendente && navigator.canShare) {
-      const file = new File([pdfBlobPendente], pdfFilenamePendente, { type: 'application/pdf' });
-      if (navigator.canShare({ files: [file] })) {
-        try {
-          await navigator.share({
-            files: [file],
-            title: 'Pedido Stylos',
-            text: mensagemPendenteWA,
-          });
-          fecharSucesso();
-          return;
-        } catch (e) {
-          /* AbortError = usuario cancelou; outros erros: cai no fallback silencioso abaixo */
-          // se cancelar ou falhar, segue pro fallback
-        }
-      }
-    }
-
-    // Estratégia B (fallback desktop / browsers antigos):
-    // baixa o PDF + abre WhatsApp Web com a mensagem de texto
+    // PRIMEIRO: baixa o PDF localmente (em qualquer device).
+    // O usuario tem o cupom pra anexar se quiser; nao depende do share que
+    // o WhatsApp Android descarta o texto quando vem arquivo junto.
     if (pdfBlobPendente) {
       const url = URL.createObjectURL(pdfBlobPendente);
       const a = document.createElement('a');
       a.href = url;
       a.download = pdfFilenamePendente;
+      a.style.display = 'none';
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
-      setTimeout(() => URL.revokeObjectURL(url), 2000);
+      setTimeout(() => URL.revokeObjectURL(url), 4000);
     }
 
+    // SEGUNDO: abre o WhatsApp SEMPRE com a mensagem completa via wa.me
+    // Funciona em iOS, Android, WA Web. Texto sempre chega 100%.
     const waUrl = `https://wa.me/${WHATSAPP_NUMERO}?text=${encodeURIComponent(mensagemPendenteWA)}`;
-    window.open(waUrl, '_blank');
-    fecharSucesso();
+    // pequeno delay deixa o download iniciar antes de abrir aba do WA
+    setTimeout(() => {
+      window.open(waUrl, '_blank', 'noopener,noreferrer');
+      fecharSucesso();
+    }, 350);
+
+    // toast informativo de que o PDF foi salvo (mobile-friendly)
+    if (pdfBlobPendente) mostrarToast('Pedido enviado! PDF salvo no celular.');
   }
 
   function baixarSomentePDF() {
@@ -2811,7 +2889,8 @@
     const toast = document.getElementById('toast');
     toast.textContent = texto;
     toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 2200);
+    clearTimeout(toast._t);
+    toast._t = setTimeout(() => toast.classList.remove('show'), 1400);
   }
 
   /* ============================================
