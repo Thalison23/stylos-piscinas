@@ -667,6 +667,16 @@
     transition: background 0.2s;
   }
   .whatsapp-btn:hover { background: #1FB855; }
+
+  .lgpd-aviso {
+    font-size: 11px;
+    color: #64748b;
+    line-height: 1.4;
+    margin: 0 0 10px;
+    text-align: center;
+  }
+  .lgpd-aviso a { color: var(--azul-deep); font-weight: 600; text-decoration: underline; }
+  .lgpd-aviso a:hover { color: var(--azul-piscina); }
   .whatsapp-btn:disabled { background: #ccc; cursor: not-allowed; }
 
   /* ===== TELA DE SUCESSO ===== */
@@ -1599,6 +1609,10 @@
       <span class="total-label">Total estimado:</span>
       <span class="total-valor" id="totalValor">R$ 0,00</span>
     </div>
+    <p class="lgpd-aviso">
+      Ao enviar o pedido você concorda com o tratamento dos seus dados (nome, WhatsApp e endereço) conforme a nossa
+      <a href="/privacidade.html" target="_blank" rel="noopener noreferrer">Política de Privacidade</a> (LGPD).
+    </p>
     <button class="whatsapp-btn" id="whatsappBtn" onclick="enviarPedido()" disabled>
       <span style="font-size:22px">💬</span>
       <span id="btnLabel">Adicione produtos primeiro</span>
@@ -1686,10 +1700,11 @@
       <a href="#porque">Por que a Stylos</a>
       <a href="#produtos">Catálogo de produtos</a>
       <a href="https://wa.me/5575982074073?text=Ol%C3%A1%21%20Vim%20pelo%20site%20e%20gostaria%20de%20conhecer%20os%20produtos%20para%20limpeza%20e%20manuten%C3%A7%C3%A3o%20de%20piscina." target="_blank" rel="noopener noreferrer">Pedir pelo WhatsApp</a>
+      <a href="/privacidade.html">Política de Privacidade</a>
     </div>
   </div>
   <div class="footer-bottom">
-    © 2026 Stylos Piscinas. Todos os direitos reservados.
+    © 2026 Stylos Piscinas. Todos os direitos reservados. · <a href="/privacidade.html" style="color:var(--azul-claro);text-decoration:underline;">Política de Privacidade</a>
   </div>
 </footer>
 

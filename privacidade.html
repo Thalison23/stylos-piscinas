@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="index, follow">
+<title>Política de Privacidade · Stylos Piscinas</title>
+<meta name="description" content="Política de Privacidade e proteção de dados pessoais da Stylos — Limpeza e Manutenção de Piscinas, em conformidade com a LGPD (Lei 13.709/2018).">
+<link rel="icon" type="image/png" href="Stylos.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --azul-piscina: #00B4D8;
+    --azul-deep: #0077B6;
+    --azul-escuro: #1E40AF;
+    --azul-claro: #90E0EF;
+    --azul-muito-claro: #E0F7FA;
+    --cinza: #F0F9FF;
+    --texto: #0F172A;
+    --texto-mute: #475569;
+    --sombra: 0 2px 10px rgba(15, 23, 42, 0.06);
+  }
+  html, body { overflow-x: hidden; max-width: 100vw; }
+  body {
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: var(--texto);
+    background: var(--cinza);
+    line-height: 1.65;
+  }
+
+  header {
+    background: white;
+    box-shadow: var(--sombra);
+    position: sticky; top: 0; z-index: 10;
+  }
+  .header-content {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 19px;
+    font-weight: 800;
+    color: var(--azul-deep);
+    text-decoration: none;
+  }
+  .logo img { width: 40px; height: 40px; border-radius: 10px; object-fit: cover; }
+  .back-link {
+    background: var(--azul-piscina);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 22px;
+    font-size: 13.5px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .back-link:hover { background: var(--azul-deep); transform: translateY(-1px); }
+
+  main {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 24px 60px;
+  }
+
+  .doc-eyebrow {
+    display: inline-block;
+    background: var(--azul-muito-claro);
+    color: var(--azul-deep);
+    font-size: 11.5px;
+    font-weight: 800;
+    letter-spacing: 1.8px;
+    padding: 5px 12px;
+    border-radius: 16px;
+    margin-bottom: 14px;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    font-size: 34px;
+    font-weight: 800;
+    color: var(--azul-escuro);
+    line-height: 1.15;
+    margin-bottom: 10px;
+  }
+  .doc-data {
+    color: var(--texto-mute);
+    font-size: 14px;
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #E0F7FA;
+  }
+
+  h2 {
+    font-size: 22px;
+    color: var(--azul-escuro);
+    font-weight: 800;
+    margin-top: 36px;
+    margin-bottom: 10px;
+    line-height: 1.25;
+  }
+  h2::before {
+    content: '';
+    display: inline-block;
+    width: 4px;
+    height: 18px;
+    background: var(--azul-piscina);
+    border-radius: 4px;
+    margin-right: 10px;
+    vertical-align: -3px;
+  }
+
+  h3 {
+    font-size: 16px;
+    color: var(--azul-deep);
+    font-weight: 700;
+    margin-top: 18px;
+    margin-bottom: 6px;
+  }
+
+  p { color: var(--texto-mute); font-size: 15.5px; margin-bottom: 12px; }
+  strong { color: var(--texto); font-weight: 700; }
+
+  ul, ol { margin: 8px 0 16px 22px; color: var(--texto-mute); font-size: 15.5px; }
+  li { margin-bottom: 6px; }
+
+  a { color: var(--azul-deep); font-weight: 600; text-decoration: underline; }
+  a:hover { color: var(--azul-piscina); }
+
+  .callout {
+    background: white;
+    border-left: 4px solid var(--azul-piscina);
+    padding: 16px 18px;
+    border-radius: 0 12px 12px 0;
+    margin: 18px 0;
+    box-shadow: var(--sombra);
+  }
+  .callout p:last-child { margin-bottom: 0; }
+
+  .contact-card {
+    background: linear-gradient(135deg, var(--azul-deep), var(--azul-escuro));
+    color: white;
+    padding: 24px 22px;
+    border-radius: 16px;
+    margin-top: 28px;
+  }
+  .contact-card h3 { color: white; margin-top: 0; font-size: 18px; }
+  .contact-card p { color: rgba(255,255,255,0.92); margin-bottom: 6px; font-size: 14.5px; }
+  .contact-card a { color: white; font-weight: 700; }
+
+  footer {
+    background: var(--azul-escuro);
+    color: white;
+    text-align: center;
+    padding: 20px;
+    font-size: 13px;
+  }
+  footer a { color: var(--azul-claro); font-weight: 600; }
+
+  @media (max-width: 600px) {
+    .header-content { padding: 10px 16px; }
+    .logo { font-size: 16px; gap: 9px; }
+    .logo img { width: 36px; height: 36px; }
+    .back-link { padding: 7px 13px; font-size: 12.5px; }
+    main { padding: 28px 18px 40px; }
+    h1 { font-size: 26px; }
+    h2 { font-size: 18px; margin-top: 28px; }
+    h3 { font-size: 15px; }
+    p, ul, ol { font-size: 14.5px; }
+    .doc-data { font-size: 13px; margin-bottom: 22px; padding-bottom: 18px; }
+    .contact-card { padding: 18px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-content">
+    <a href="/" class="logo" aria-label="Voltar para o início">
+      <img src="Stylos.png" alt="" onerror="this.src='Stylos.jpg'">
+      <span>Stylos Piscinas</span>
+    </a>
+    <a href="/" class="back-link">← Voltar ao site</a>
+  </div>
+</header>
+
+<main>
+  <span class="doc-eyebrow">Documento legal</span>
+  <h1>Política de Privacidade</h1>
+  <p class="doc-data">Última atualização: 21 de maio de 2026 · Vigência imediata</p>
+
+  <p>A <strong>Stylos — Limpeza e Manutenção de Piscinas</strong> ("Stylos", "nós") valoriza a privacidade dos seus clientes e visitantes. Esta política descreve, de forma clara e objetiva, como coletamos, usamos, armazenamos e protegemos seus dados pessoais, em conformidade com a <strong>Lei Geral de Proteção de Dados (LGPD — Lei nº 13.709/2018)</strong>.</p>
+
+  <div class="callout">
+    <p><strong>Resumo rápido:</strong> coletamos apenas o necessário para atender seu pedido (nome, WhatsApp, endereço). Não vendemos nem compartilhamos seus dados com terceiros para marketing. Você pode pedir acesso, correção ou exclusão a qualquer momento pelo WhatsApp (75) 98207-4073.</p>
+  </div>
+
+  <h2>1. Quem é o controlador dos dados</h2>
+  <p>O controlador dos dados pessoais tratados neste site é a <strong>Stylos — Limpeza e Manutenção de Piscinas</strong>, que pode ser contatada pelo WhatsApp <strong>(75) 98207-4073</strong>, de segunda a sexta-feira das 08h às 17h e aos sábados das 08h às 12h.</p>
+
+  <h2>2. Quais dados coletamos</h2>
+  <p>Coletamos apenas os dados que você fornece voluntariamente ao finalizar um pedido pelo site:</p>
+  <ul>
+    <li><strong>Nome completo</strong></li>
+    <li><strong>Telefone / WhatsApp</strong></li>
+    <li><strong>Endereço de entrega</strong></li>
+    <li><strong>Tipo do local</strong> (Casa, Condomínio, Comercial)</li>
+    <li><strong>Forma de pagamento preferida</strong> (PIX, cartão, dinheiro etc.)</li>
+    <li><strong>Observações</strong> do pedido (opcional)</li>
+    <li><strong>Itens do pedido</strong> e valor estimado</li>
+  </ul>
+  <p>Não coletamos CPF, RG, data de nascimento, dados bancários ou qualquer outra informação sensível pelo site.</p>
+
+  <h2>3. Para que usamos seus dados</h2>
+  <p>Seus dados são tratados exclusivamente para:</p>
+  <ul>
+    <li>Processar e atender o seu pedido</li>
+    <li>Entrar em contato pelo WhatsApp para confirmar detalhes, prazo e endereço</li>
+    <li>Gerar e enviar o cupom do pedido em PDF</li>
+    <li>Manter o histórico de relacionamento comercial para futuras compras</li>
+    <li>Cumprir obrigações legais e fiscais quando aplicáveis</li>
+  </ul>
+
+  <h2>4. Base legal do tratamento</h2>
+  <p>Tratamos seus dados com base em (Art. 7º da LGPD):</p>
+  <ul>
+    <li><strong>Execução de contrato</strong> — para entregar o pedido que você fez</li>
+    <li><strong>Cumprimento de obrigação legal</strong> — quando exigido por legislação</li>
+    <li><strong>Legítimo interesse</strong> — para registro de relacionamento comercial e melhoria do atendimento</li>
+  </ul>
+
+  <h2>5. Onde seus dados ficam armazenados</h2>
+  <h3>5.1 No nosso servidor (Netlify Forms)</h3>
+  <p>Quando você envia um pedido, os dados são transmitidos por conexão segura HTTPS e armazenados pelo serviço de formulários da <strong>Netlify, Inc.</strong> (provedor de infraestrutura). A Netlify possui certificações de segurança internacionais e mantém os dados em datacenters protegidos.</p>
+
+  <h3>5.2 No seu dispositivo (localStorage)</h3>
+  <p>Para sua comodidade, guardamos no seu navegador apenas <strong>metadados do pedido</strong> (número, data e valor total) — <strong>sem armazenar nome, telefone, endereço ou observações</strong>. Esses metadados são automaticamente apagados após <strong>60 dias</strong> e ficam limitados às 20 entradas mais recentes.</p>
+
+  <h2>6. Compartilhamento com terceiros</h2>
+  <p><strong>Não vendemos seus dados</strong>. Não compartilhamos com terceiros para fins de marketing. Os únicos compartilhamentos necessários são:</p>
+  <ul>
+    <li><strong>Netlify, Inc.</strong> — provedor de hospedagem do site e do serviço de formulários</li>
+    <li><strong>WhatsApp / Meta</strong> — quando você opta por enviar o pedido pelo WhatsApp, a comunicação ocorre na plataforma deles, sujeita à política de privacidade da Meta</li>
+    <li><strong>Google Fonts</strong> — utilizamos fontes do Google Fonts (a Google pode registrar seu IP ao carregar a fonte)</li>
+    <li><strong>Google Maps</strong> — quando você clica em "Ver no Google Maps", é redirecionado para o serviço da Google</li>
+    <li><strong>Autoridades públicas</strong> — apenas mediante ordem judicial ou exigência legal</li>
+  </ul>
+
+  <h2>7. Cookies e tecnologias similares</h2>
+  <p>Este site <strong>não utiliza cookies de rastreamento</strong>, publicidade ou análise comportamental. Usamos apenas:</p>
+  <ul>
+    <li><strong>localStorage</strong> — para guardar metadados do seu pedido localmente (descrito no item 5.2)</li>
+    <li><strong>Cookies essenciais</strong> da Netlify para o funcionamento do site (sessão técnica)</li>
+  </ul>
+
+  <h2>8. Por quanto tempo guardamos seus dados</h2>
+  <ul>
+    <li><strong>No seu navegador:</strong> 60 dias (apagamento automático)</li>
+    <li><strong>No servidor:</strong> pelo tempo necessário ao atendimento do pedido e cumprimento de obrigações fiscais/legais (geralmente até 5 anos, conforme legislação brasileira)</li>
+    <li><strong>A qualquer momento</strong>, você pode solicitar a exclusão dos seus dados</li>
+  </ul>
+
+  <h2>9. Seus direitos (Art. 18 da LGPD)</h2>
+  <p>Como titular dos dados, você tem direito a:</p>
+  <ul>
+    <li><strong>Acessar</strong> os dados que temos sobre você</li>
+    <li><strong>Corrigir</strong> dados incompletos, inexatos ou desatualizados</li>
+    <li><strong>Solicitar anonimização, bloqueio ou eliminação</strong> de dados desnecessários ou tratados em desconformidade</li>
+    <li><strong>Solicitar a portabilidade</strong> dos dados a outro fornecedor</li>
+    <li><strong>Solicitar a exclusão</strong> dos dados tratados com seu consentimento</li>
+    <li><strong>Obter informação</strong> sobre com quem compartilhamos seus dados</li>
+    <li><strong>Revogar o consentimento</strong> a qualquer momento</li>
+    <li><strong>Reclamar à ANPD</strong> (Autoridade Nacional de Proteção de Dados) em <a href="https://www.gov.br/anpd" target="_blank" rel="noopener noreferrer">gov.br/anpd</a></li>
+  </ul>
+
+  <h2>10. Segurança dos dados</h2>
+  <p>Adotamos medidas técnicas para proteger seus dados:</p>
+  <ul>
+    <li>Transmissão criptografada via <strong>HTTPS</strong> em todas as comunicações</li>
+    <li>Cabeçalhos de segurança HTTP (HSTS, CSP, X-Frame-Options, Permissions-Policy)</li>
+    <li>Sanitização de entradas para impedir injeção de código</li>
+    <li>Integridade de subrecursos (SRI) para bibliotecas externas</li>
+    <li>Acesso restrito ao painel administrativo do site</li>
+  </ul>
+  <p>Apesar das medidas adotadas, nenhum sistema é 100% seguro. Em caso de incidente de segurança que possa causar risco relevante aos titulares, comunicaremos os afetados e a ANPD conforme exige a LGPD.</p>
+
+  <h2>11. Crianças e adolescentes</h2>
+  <p>O site é direcionado ao público adulto. Não coletamos intencionalmente dados de crianças ou adolescentes menores de 18 anos. Caso identifiquemos coleta indevida, os dados serão excluídos imediatamente.</p>
+
+  <h2>12. Mudanças nesta política</h2>
+  <p>Podemos atualizar esta política periodicamente para refletir mudanças legais ou operacionais. A data da última atualização sempre estará no topo do documento. Mudanças significativas serão comunicadas pelos nossos canais.</p>
+
+  <div class="contact-card">
+    <h3>📩 Como exercer seus direitos</h3>
+    <p>Para solicitar acesso, correção, exclusão ou qualquer outro direito previsto na LGPD, entre em contato:</p>
+    <p>WhatsApp: <a href="https://wa.me/5575982074073?text=Ol%C3%A1%21%20Gostaria%20de%20exercer%20um%20direito%20sobre%20meus%20dados%20pessoais%20%28LGPD%29." target="_blank" rel="noopener noreferrer">(75) 98207-4073</a></p>
+    <p>Atendimento: Seg a Sex · 08h às 17h · Sáb · 08h às 12h</p>
+    <p>Responderemos sua solicitação em até <strong>15 dias úteis</strong>, conforme prazo previsto na LGPD.</p>
+  </div>
+
+</main>
+
+<footer>
+  © 2026 Stylos Piscinas. Todos os direitos reservados. · <a href="/">Voltar ao site</a>
+</footer>
+
+</body>
+</html>
