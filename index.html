@@ -231,24 +231,36 @@
     text-align: center;
     padding: 24px;
     position: relative;
-    /* filtro suave nas fotos para suavizar texto baked nas imagens */
     background-color: #001E50;
+    overflow: hidden;
   }
+
+  /* IMAGEM de fundo com blur sutil + zoom = mascara texto baked + visual premium frosted glass */
   .slide::before {
-    /* overlay azul mais opaco + gradiente sutil = esconde textos do PNG sem chapar */
+    content: '';
+    position: absolute;
+    inset: -30px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: blur(3px) saturate(1.1);
+    transform: scale(1.06);
+    z-index: 0;
+  }
+
+  /* OVERLAY gradiente sofisticado pra contraste do texto */
+  .slide::after {
     content: '';
     position: absolute;
     inset: 0;
-    background:
-      linear-gradient(180deg, rgba(0,30,80,0.55) 0%, rgba(0,40,100,0.72) 60%, rgba(0,30,80,0.82) 100%),
-      radial-gradient(ellipse at center, transparent 0%, rgba(0,30,80,0.35) 100%);
+    background: linear-gradient(180deg, rgba(0,20,60,0.40) 0%, rgba(0,30,80,0.55) 55%, rgba(0,20,60,0.72) 100%);
     z-index: 1;
     pointer-events: none;
   }
 
-  .slide-1 { background-image: url('carrossel.png'); background-size: cover; background-position: center; }
-  .slide-2 { background-image: url('carrossel2.png'); background-size: cover; background-position: center; }
-  .slide-3 { background-image: url('carrossel3.png'); background-size: cover; background-position: center; }
+  .slide-1::before { background-image: url('carrossel.png'); }
+  .slide-2::before { background-image: url('carrossel2.png'); }
+  .slide-3::before { background-image: url('carrossel3.png'); }
 
   .slide-content {
     max-width: 680px;
@@ -1147,46 +1159,82 @@
   .wa-float:hover .wa-float-label { opacity: 1; transform: translateX(0); }
 
 
-  /* ===== FOOTER COLUNAS ===== */
+  /* ===== FOOTER premium minimal (estilo agencia) ===== */
   .footer-grid {
     max-width: 1200px;
     margin: 0 auto;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 32px;
-    padding: 50px 24px 30px;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 60px;
+    padding: 56px 28px 32px;
     text-align: left;
+    align-items: start;
+  }
+  .footer-brand { max-width: 420px; }
+  .footer-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    color: white;
+    text-decoration: none;
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 12px;
+  }
+  .footer-logo img {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    object-fit: cover;
+  }
+  .footer-brand-text {
+    font-size: 14px;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.72);
+    margin: 0;
   }
   .footer-col h4 {
-    font-size: 14px;
-    color: var(--azul-claro);
-    margin-bottom: 14px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 16px;
     text-transform: uppercase;
-    letter-spacing: 1.5px;
-    font-weight: 800;
+    letter-spacing: 1.8px;
+    font-weight: 700;
   }
   .footer-col p, .footer-col a {
     font-size: 14px;
-    color: rgba(255,255,255,0.85);
+    color: rgba(255,255,255,0.88);
     line-height: 1.7;
     text-decoration: none;
     display: block;
   }
-  .footer-col a { margin-bottom: 4px; }
-  .footer-col a:hover { color: var(--azul-claro); }
-  .footer-label { color: var(--azul-claro); font-weight: 700; margin-right: 4px; }
-  .footer-brand-text { font-size: 13px; opacity: 0.8; margin-top: 8px; line-height: 1.6; }
+  .footer-col a {
+    margin-bottom: 6px;
+    transition: color 0.2s, transform 0.2s;
+  }
+  .footer-col a:hover { color: var(--azul-claro); transform: translateX(2px); }
   .footer-bottom {
-    border-top: 1px solid rgba(255,255,255,0.12);
-    padding: 18px 20px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding: 20px 28px;
     text-align: center;
     font-size: 12px;
-    opacity: 0.7;
+    color: rgba(255,255,255,0.55);
+    max-width: 1200px;
+    margin: 0 auto;
   }
 
-  /* Tablet: 2 colunas */
-  @media (max-width: 900px) {
-    .footer-grid { grid-template-columns: repeat(2, 1fr); gap: 26px; }
+  /* Tablet/mobile: 1 coluna empilhada */
+  @media (max-width: 768px) {
+    .footer-grid {
+      grid-template-columns: 1fr;
+      gap: 28px;
+      padding: 36px 22px 22px;
+    }
+    .footer-brand { max-width: 100%; }
+    .footer-logo { font-size: 17px; }
+    .footer-logo img { width: 36px; height: 36px; }
+    .footer-brand-text { font-size: 13px; }
+    .footer-bottom { padding: 16px 22px 80px; font-size: 11.5px; }
   }
 
   /* ===== ATENDIMENTO ===== */
@@ -1398,21 +1446,10 @@
     .info-valor { font-size: 11.5px; line-height: 1.25; }
     .info-cta { font-size: 10px; margin-top: 5px; }
 
-    /* FOOTER 1 col limpo */
-    .footer-grid {
-      grid-template-columns: 1fr;
-      gap: 20px;
-      padding: 30px 22px 18px;
-      text-align: left;
-    }
-    .footer-col { padding: 0; }
-    .footer-col h4 { font-size: 12.5px; margin-bottom: 8px; letter-spacing: 1.3px; }
-    .footer-col p, .footer-col a { font-size: 13.5px; line-height: 1.55; }
-    .footer-col a { margin-bottom: 5px; word-break: keep-all; }
-    .footer-col p { margin-bottom: 5px; }
-    .footer-brand-text { font-size: 12.5px; margin-top: 4px; }
-    /* respiro pro botão flutuante WA não cobrir copyright */
-    .footer-bottom { padding: 14px 20px 80px; font-size: 11px; }
+    /* FOOTER mobile - regras adicionais ao bloco premium acima */
+    .footer-col h4 { font-size: 11.5px; margin-bottom: 10px; letter-spacing: 1.5px; }
+    .footer-col p, .footer-col a { font-size: 14px; line-height: 1.6; }
+    .footer-col a { margin-bottom: 6px; word-break: keep-all; }
 
     /* SEM RESULTADOS */
     .sem-resultados { padding: 36px 18px; }
@@ -1812,26 +1849,15 @@
   </div>
 </section>
 
-<!-- ===== FOOTER ===== -->
+<!-- ===== FOOTER premium minimal ===== -->
 <footer>
   <div class="footer-grid">
-    <div class="footer-col">
-      <h4>Stylos Piscinas</h4>
-      <p>Produtos para limpeza, tratamento e manutenção da sua piscina, com atendimento especializado.</p>
-      <p class="footer-brand-text">Compromisso com cada cliente e com cada pedido.</p>
-    </div>
-
-    <div class="footer-col">
-      <h4>Contato</h4>
-      <a href="https://wa.me/5575982074073?text=Ol%C3%A1%21%20Vim%20pelo%20site%20e%20gostaria%20de%20conhecer%20os%20produtos%20para%20limpeza%20e%20manuten%C3%A7%C3%A3o%20de%20piscina." target="_blank" rel="noopener noreferrer"><span class="footer-label">WhatsApp:</span> (75) 98207-4073</a>
-      <a href="tel:+5575982074073"><span class="footer-label">Telefone:</span> (75) 98207-4073</a>
-      <a href="https://maps.app.goo.gl/tXCJSr4kF6ZHM6pd8" target="_blank" rel="noopener noreferrer">Ver no Google Maps</a>
-    </div>
-
-    <div class="footer-col">
-      <h4>Atendimento</h4>
-      <p>Segunda a Sexta<br>08h às 17h</p>
-      <p style="margin-top:10px">Sábado<br>08h às 12h</p>
+    <div class="footer-col footer-brand">
+      <a href="#" class="footer-logo">
+        <img src="Stylos.png" alt="" onerror="this.onerror=null;this.src='Stylos.jpg'">
+        <span>Stylos Piscinas</span>
+      </a>
+      <p class="footer-brand-text">Produtos para limpeza, tratamento e manutenção da sua piscina, com atendimento especializado.</p>
     </div>
 
     <div class="footer-col">
@@ -1844,7 +1870,7 @@
     </div>
   </div>
   <div class="footer-bottom">
-    © 2026 Stylos Piscinas. Todos os direitos reservados. · <a href="/privacidade.html" style="color:var(--azul-claro);text-decoration:underline;">Política de Privacidade</a>
+    © 2026 Stylos Piscinas. Todos os direitos reservados.
   </div>
 </footer>
 
