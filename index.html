@@ -76,6 +76,28 @@
     line-height: 1.6;
   }
 
+  /* Acessibilidade: foco visível pra navegação por teclado (premium a11y) */
+  *:focus-visible {
+    outline: 3px solid var(--azul-piscina);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+  /* Skip link pra leitores de tela / teclado */
+  .skip-link {
+    position: absolute;
+    top: -100px;
+    left: 8px;
+    background: var(--azul-deep);
+    color: white;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: 700;
+    z-index: 9999;
+    text-decoration: none;
+    transition: top 0.2s;
+  }
+  .skip-link:focus { top: 8px; }
+
   /* ===== HEADER ===== */
   header {
     background: var(--branco);
@@ -1354,6 +1376,7 @@
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="image" href="carrossel.png" fetchpriority="high">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
         integrity="sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNTlrdUmTzrDgektczlKNRRhy5X5AAOnx5S09ydFYWWNSfcEqDTTHgtNA=="
@@ -1361,6 +1384,8 @@
         referrerpolicy="no-referrer"></script>
 </head>
 <body>
+
+<a href="#produtos" class="skip-link">Pular para o catálogo</a>
 
 <!-- Form oculto pro Netlify Forms detectar no build (precisa de HTML estático) -->
 <form name="pedido-stylos" netlify netlify-honeypot="bot-field" hidden>
@@ -1576,9 +1601,9 @@
 <div class="overlay" id="overlay" onclick="fecharCarrinho()"></div>
 
 <!-- ===== CARRINHO SIDEBAR ===== -->
-<aside class="carrinho" id="carrinho" aria-label="Carrinho de pedido">
+<aside class="carrinho" id="carrinho" role="dialog" aria-modal="true" aria-labelledby="carrinhoTitulo" aria-label="Carrinho de pedido">
   <div class="carrinho-header">
-    <h3>🛒 Seu Pedido</h3>
+    <h3 id="carrinhoTitulo">🛒 Seu Pedido</h3>
     <button class="fechar-btn" onclick="fecharCarrinho()" aria-label="Fechar carrinho">×</button>
   </div>
 
@@ -1600,7 +1625,7 @@
       </div>
       <div class="form-row">
         <label for="form-telefone">WhatsApp *</label>
-        <input type="tel" id="form-telefone" placeholder="(75) 98207-4073" required maxlength="20" autocomplete="tel" inputmode="tel" pattern="[\d\s\(\)\-\+]{10,20}">
+        <input type="tel" id="form-telefone" placeholder="(75) 98207-4073" required maxlength="16" autocomplete="tel" inputmode="tel" pattern="[\d\s\(\)\-\+]{10,20}" oninput="mascararTelefone(this)">
       </div>
       <div class="form-row">
         <label for="form-endereco">Endereço de entrega *</label>
@@ -1647,10 +1672,10 @@
 </aside>
 
 <!-- ===== MODAL DE SUCESSO ===== -->
-<div class="sucesso-overlay" id="sucessoOverlay">
+<div class="sucesso-overlay" id="sucessoOverlay" role="dialog" aria-modal="true" aria-labelledby="sucessoTitulo">
   <div class="sucesso-card">
     <div class="sucesso-icon">✓</div>
-    <h2>Pedido pronto!</h2>
+    <h2 id="sucessoTitulo">Pedido pronto!</h2>
     <p>
       Seu cupom em <strong>PDF</strong> foi gerado.<br>
       No celular, ao clicar abaixo, você compartilha o PDF diretamente no WhatsApp.<br>
@@ -2232,7 +2257,8 @@
      ENVIO DO PEDIDO — Netlify Forms + WhatsApp + CRM
      ============================================ */
   function montarMensagemWhatsApp(dados, numPedido) {
-    let msg = `*🏊 Pedido ${numPedido} - ${NOME_LOJA}*\n\n`;
+    let msg = `Olá! Gostaria de finalizar este pedido com a Stylos Piscinas. Seguem os dados e produtos selecionados.\n\n`;
+    msg += `*🏊 Pedido ${numPedido} - ${NOME_LOJA}*\n\n`;
     msg += `👤 *Cliente:* ${dados.nome}\n`;
     msg += `📱 *WhatsApp:* ${dados.telefone}\n`;
     msg += `📍 *Endereço:* ${dados.endereco}\n`;
@@ -2437,6 +2463,19 @@
   function sanitizarTelefone(s) {
     if (!s) return '';
     return String(s).replace(/\D/g, '').slice(0, 13);
+  }
+
+  // Mascara o input de telefone em tempo real: (XX) XXXXX-XXXX
+  function mascararTelefone(input) {
+    let v = input.value.replace(/\D/g, '').slice(0, 11);
+    if (v.length === 0) { input.value = ''; return; }
+    if (v.length <= 2) { input.value = '(' + v; return; }
+    if (v.length <= 6) { input.value = '(' + v.slice(0,2) + ') ' + v.slice(2); return; }
+    if (v.length <= 10) { // fixo: (XX) XXXX-XXXX
+      input.value = '(' + v.slice(0,2) + ') ' + v.slice(2,6) + '-' + v.slice(6);
+    } else { // celular: (XX) XXXXX-XXXX
+      input.value = '(' + v.slice(0,2) + ') ' + v.slice(2,7) + '-' + v.slice(7);
+    }
   }
 
   // Valida telefone brasileiro: 10 dígitos (DDD + 8) ou 11 (DDD + 9 móvel)
