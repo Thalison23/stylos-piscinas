@@ -1575,7 +1575,8 @@
 <a href="#produtos" class="skip-link">Pular para o catálogo</a>
 
 <!-- Form oculto pro Netlify Forms detectar no build (precisa de HTML estático) -->
-<form name="pedido-stylos" netlify netlify-honeypot="bot-field" hidden>
+<form name="pedido-stylos" netlify netlify-honeypot="bot-field" enctype="multipart/form-data" hidden>
+  <input type="text" name="numero-pedido" />
   <input type="text" name="nome" />
   <input type="text" name="telefone" />
   <input type="text" name="endereco" />
@@ -1584,6 +1585,7 @@
   <textarea name="observacoes"></textarea>
   <textarea name="pedido"></textarea>
   <input type="text" name="valor-estimado" />
+  <input type="file" name="cupom-pdf" />
   <input type="text" name="bot-field" />
 </form>
 
@@ -2739,23 +2741,7 @@
     btn.disabled = true;
     document.getElementById('btnLabel').textContent = 'Gerando cupom...';
 
-    // 1) Envia POST pro Netlify Forms (dono recebe email)
-    try {
-      await fetch('/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({
-          'form-name': 'pedido-stylos',
-          nome, telefone, endereco, grupo, pagamento, observacoes,
-          pedido: pedidoTexto,
-          'valor-estimado': formatBRL(total),
-        }).toString()
-      });
-    } catch (e) {
-      /* falha silenciosa em dev local; em prod o Netlify aceita o POST */
-    }
-
-    // 2) Gera nº do pedido + PDF cupom
+    // 1) Gera nº do pedido + PDF cupom PRIMEIRO (pra anexar no Netlify Form)
     const numPedido = 'STY' + Date.now().toString().slice(-6);
     try {
       const { blob, filename } = gerarPDFCupom(dados, numPedido);
@@ -2766,8 +2752,32 @@
       pdfBlobPendente = null;
     }
 
-    // 3) Monta mensagem do WhatsApp (texto)
+    // 2) Monta mensagem do WhatsApp (texto)
     mensagemPendenteWA = montarMensagemWhatsApp(dados, numPedido);
+
+    // 3) Envia pro Netlify Forms COM o PDF anexado
+    //    O dono recebe email com link do PDF + todos os dados do pedido
+    //    Tambem fica registrado no painel Netlify -> Forms -> Submissions
+    try {
+      const fd = new FormData();
+      fd.append('form-name', 'pedido-stylos');
+      fd.append('numero-pedido', numPedido);
+      fd.append('nome', nome);
+      fd.append('telefone', telefone);
+      fd.append('endereco', endereco);
+      fd.append('grupo', grupo);
+      fd.append('pagamento', pagamento);
+      fd.append('observacoes', observacoes);
+      fd.append('pedido', pedidoTexto);
+      fd.append('valor-estimado', formatBRL(total));
+      if (pdfBlobPendente) {
+        const pdfFile = new File([pdfBlobPendente], pdfFilenamePendente, { type: 'application/pdf' });
+        fd.append('cupom-pdf', pdfFile);
+      }
+      await fetch('/', { method: 'POST', body: fd });
+    } catch (e) {
+      /* falha silenciosa em dev local; em prod o Netlify aceita o POST */
+    }
 
     // 4) Histórico local - SEM PII (LGPD/privacidade)
     // Guarda apenas metadados do pedido pra histórico local do dispositivo.
