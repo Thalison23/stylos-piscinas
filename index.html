@@ -20,8 +20,8 @@
 <meta property="og:url" content="https://stylos-piscinas.netlify.app/">
 <meta property="og:title" content="Stylos Piscinas | Produtos para limpeza e manutenção de piscina">
 <meta property="og:description" content="Tudo para manter sua piscina limpa e cristalina. Produtos de qualidade para limpeza, tratamento e manutenção, com atendimento especializado pelo WhatsApp.">
-<meta property="og:image" content="https://stylos-piscinas.netlify.app/carrossel.png">
-<meta property="og:image:secure_url" content="https://stylos-piscinas.netlify.app/carrossel.png">
+<meta property="og:image" content="https://stylos-piscinas.netlify.app/carrossel.webp">
+<meta property="og:image:secure_url" content="https://stylos-piscinas.netlify.app/carrossel.webp">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Piscina moderna projetada pela Stylos">
@@ -30,7 +30,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Stylos Piscinas | Produtos para limpeza e manutenção de piscina">
 <meta name="twitter:description" content="Tudo para manter sua piscina limpa e cristalina. Produtos de qualidade e atendimento especializado pelo WhatsApp.">
-<meta name="twitter:image" content="https://stylos-piscinas.netlify.app/carrossel.png">
+<meta name="twitter:image" content="https://stylos-piscinas.netlify.app/carrossel.webp">
 <meta name="twitter:image:alt" content="Piscina moderna projetada pela Stylos">
 
 <!-- Schema.org / Dados estruturados (LocalBusiness para rich snippets do Google) -->
@@ -260,32 +260,31 @@
     overflow: hidden;
   }
 
-  /* IMAGEM de fundo com blur sutil + zoom = mascara texto baked + visual premium frosted glass */
+  /* IMAGEM de fundo nitida (agora que sao novas e leves) com leve saturacao */
   .slide::before {
     content: '';
     position: absolute;
-    inset: -30px;
+    inset: 0;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    filter: blur(3px) saturate(1.1);
-    transform: scale(1.06);
+    filter: saturate(1.08);
     z-index: 0;
   }
 
-  /* OVERLAY gradiente sofisticado pra contraste do texto - mais leve */
+  /* OVERLAY refinado: leve no topo, gradiente sutil pra baixo (legibilidade do texto) */
   .slide::after {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, rgba(0,20,60,0.30) 0%, rgba(0,30,80,0.48) 60%, rgba(0,20,60,0.66) 100%);
+    background: linear-gradient(180deg, rgba(0,20,60,0.22) 0%, rgba(0,30,80,0.40) 60%, rgba(0,20,60,0.58) 100%);
     z-index: 1;
     pointer-events: none;
   }
 
-  .slide-1::before { background-image: url('carrossel.png'); }
-  .slide-2::before { background-image: url('carrossel2.png'); }
-  .slide-3::before { background-image: url('carrossel3.png'); }
+  .slide-1::before { background-image: url('carrossel.webp'); }
+  .slide-2::before { background-image: url('carrossel2.webp'); }
+  .slide-3::before { background-image: url('carrossel3.webp'); }
 
   .slide-content {
     max-width: 680px;
@@ -1665,7 +1664,7 @@
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="image" href="carrossel.png" fetchpriority="high">
+<link rel="preload" as="image" href="carrossel.webp" fetchpriority="high">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
         integrity="sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNTlrdUmTzrDgektczlKNRRhy5X5AAOnx5S09ydFYWWNSfcEqDTTHgtNA=="
