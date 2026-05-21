@@ -554,13 +554,15 @@
 
   .qtd-btn {
     background: none; border: none;
-    width: 30px; height: 36px;
+    width: 36px; height: 40px;
+    min-width: 36px;
     cursor: pointer;
     font-size: 18px; font-weight: 700;
     color: var(--azul-deep);
+    touch-action: manipulation;
   }
   .qtd-btn:hover { background: var(--azul-muito-claro); }
-  .qtd-valor { min-width: 24px; text-align: center; font-weight: 700; }
+  .qtd-valor { min-width: 28px; text-align: center; font-weight: 700; }
 
   .add-btn {
     flex: 1;
@@ -693,11 +695,14 @@
 
   .item-qtd-btn {
     background: var(--cinza); border: none;
-    width: 26px; height: 26px;
+    width: 32px; height: 32px;
+    min-width: 32px;
     border-radius: 50%;
     cursor: pointer;
     font-weight: 700;
     color: var(--azul-deep);
+    touch-action: manipulation;
+    font-size: 16px;
   }
   .item-qtd-btn:hover { background: var(--azul-muito-claro); }
 
@@ -1022,6 +1027,17 @@
     margin-bottom: 6px;
   }
   .etapa-desc { font-size: 14px; color: #64748b; line-height: 1.5; }
+  .etapa-preco {
+    display: inline-block;
+    margin-top: 12px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--azul-deep);
+    background: var(--azul-muito-claro);
+    padding: 5px 11px;
+    border-radius: 999px;
+    letter-spacing: 0.2px;
+  }
 
   /* ===== POR QUE ESCOLHER (Prova Social) ===== */
   .porque {
@@ -1596,7 +1612,7 @@
       <img src="Stylos.png" alt="Stylos" onerror="this.onerror=null;this.src='Stylos.jpg'">
       <div class="logo-text">
         <div>Stylos</div>
-        <div class="tag">PISCINAS</div>
+        <div class="tag">PISCINAS · BAHIA</div>
       </div>
     </a>
     <button class="cart-btn" onclick="abrirCarrinho()">
@@ -1667,7 +1683,39 @@
   </div>
 </section>
 
-<!-- ===== PRODUTOS PARA LIMPEZA ===== -->
+<!-- ===== BUSCA ===== -->
+<div class="busca-wrapper" role="search">
+  <div class="busca-box">
+    <span class="busca-icon" aria-hidden="true">🔍</span>
+    <input
+      type="search"
+      id="buscaInput"
+      class="busca-input"
+      placeholder="Buscar produto por nome ou código..."
+      aria-label="Buscar produto"
+      autocomplete="off"
+      maxlength="60"
+      enterkeyhint="search">
+    <button type="button" id="buscaClear" class="busca-clear" aria-label="Limpar busca">×</button>
+  </div>
+</div>
+
+<!-- ===== CATEGORIAS NAV ===== -->
+<nav class="categorias-nav" aria-label="Filtros de categoria">
+  <div class="categorias-list" id="categoriasList"></div>
+</nav>
+
+<!-- ===== PRODUTOS (catalogo movido pra cima - conversao) ===== -->
+<section class="produtos-section" id="produtos" aria-label="Catálogo de produtos para piscina">
+  <div class="secao-header" style="margin-bottom:24px">
+    <span class="secao-eyebrow">Catálogo</span>
+    <h2 class="secao-titulo">Produtos para sua piscina</h2>
+    <p class="secao-sub">Químicos, equipamentos e acessórios selecionados. Monte seu pedido e envie pelo WhatsApp.</p>
+  </div>
+  <div id="produtosContainer"></div>
+</section>
+
+<!-- ===== PRODUTOS PARA LIMPEZA (educacional - categorias resumidas) ===== -->
 <section class="como-funciona" id="como-funciona" aria-label="Produtos para limpeza da piscina">
   <div class="secao-container">
     <div class="secao-header">
@@ -1680,31 +1728,37 @@
         <div class="etapa-numero">1</div>
         <h3 class="etapa-titulo">Cloro</h3>
         <p class="etapa-desc">Elimina bactérias e mantém a água protegida.</p>
+        <span class="etapa-preco">A partir de R$ 25</span>
       </div>
       <div class="etapa-card">
         <div class="etapa-numero">2</div>
         <h3 class="etapa-titulo">Algicida</h3>
         <p class="etapa-desc">Previne e combate algas, deixando a água cristalina.</p>
+        <span class="etapa-preco">A partir de R$ 25</span>
       </div>
       <div class="etapa-card">
         <div class="etapa-numero">3</div>
         <h3 class="etapa-titulo">Clarificante</h3>
         <p class="etapa-desc">Decanta impurezas e clareia a água rapidamente.</p>
+        <span class="etapa-preco">A partir de R$ 22</span>
       </div>
       <div class="etapa-card">
         <div class="etapa-numero">4</div>
         <h3 class="etapa-titulo">pH e alcalinidade</h3>
         <p class="etapa-desc">Equilibra o pH para tratamento mais eficiente.</p>
+        <span class="etapa-preco">A partir de R$ 25</span>
       </div>
       <div class="etapa-card">
         <div class="etapa-numero">5</div>
         <h3 class="etapa-titulo">Acessórios</h3>
         <p class="etapa-desc">Peneiras, escovas e aspiradores pra limpar fácil.</p>
+        <span class="etapa-preco">A partir de R$ 15</span>
       </div>
       <div class="etapa-card">
         <div class="etapa-numero">6</div>
         <h3 class="etapa-titulo">Testes</h3>
         <p class="etapa-desc">Mede cloro, pH e alcalinidade com precisão.</p>
+        <span class="etapa-preco">A partir de R$ 10</span>
       </div>
     </div>
   </div>
@@ -1752,38 +1806,6 @@
       💬 Falar no WhatsApp
     </a>
   </div>
-</section>
-
-<!-- ===== BUSCA ===== -->
-<div class="busca-wrapper" role="search">
-  <div class="busca-box">
-    <span class="busca-icon" aria-hidden="true">🔍</span>
-    <input
-      type="search"
-      id="buscaInput"
-      class="busca-input"
-      placeholder="Buscar produto por nome ou código..."
-      aria-label="Buscar produto"
-      autocomplete="off"
-      maxlength="60"
-      enterkeyhint="search">
-    <button type="button" id="buscaClear" class="busca-clear" aria-label="Limpar busca">×</button>
-  </div>
-</div>
-
-<!-- ===== CATEGORIAS NAV ===== -->
-<nav class="categorias-nav" aria-label="Filtros de categoria">
-  <div class="categorias-list" id="categoriasList"></div>
-</nav>
-
-<!-- ===== PRODUTOS ===== -->
-<section class="produtos-section" id="produtos" aria-label="Catálogo de produtos para piscina">
-  <div class="secao-header" style="margin-bottom:24px">
-    <span class="secao-eyebrow">Catálogo</span>
-    <h2 class="secao-titulo">Produtos para sua piscina</h2>
-    <p class="secao-sub">Químicos, equipamentos e acessórios selecionados. Monte seu pedido e envie pelo WhatsApp.</p>
-  </div>
-  <div id="produtosContainer"></div>
 </section>
 
 <!-- ===== OVERLAY ===== -->
