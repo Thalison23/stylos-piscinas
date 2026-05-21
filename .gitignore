@@ -1,0 +1,55 @@
+# Variáveis de ambiente e secrets
+.env
+.env.local
+.env.*.local
+.env.production
+*.pem
+*.key
+*.crt
+credentials.json
+secrets.json
+
+# Dependências
+node_modules/
+bower_components/
+jspm_packages/
+
+# Build artifacts
+dist/
+build/
+.next/
+.nuxt/
+.cache/
+.parcel-cache/
+out/
+
+# Logs e temporários
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+*.tmp
+*.temp
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# IDE / Editor
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.history/
+
+# Netlify
+.netlify/
+
+# Cobertura de testes
+coverage/
+.nyc_output/
+
+# Lock files locais (mantém só o do projeto)
+package-lock.json.bak

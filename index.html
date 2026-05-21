@@ -1319,7 +1319,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
+        integrity="sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNTlrdUmTzrDgektczlKNRRhy5X5AAOnx5S09ydFYWWNSfcEqDTTHgtNA=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"></script>
 </head>
 <body>
 
@@ -2452,10 +2455,25 @@
     // 3) Monta mensagem do WhatsApp (texto)
     mensagemPendenteWA = montarMensagemWhatsApp(dados, numPedido);
 
-    // 4) Backup localStorage
+    // 4) Histórico local - SEM PII (LGPD/privacidade)
+    // Guarda apenas metadados do pedido pra histórico local do dispositivo.
+    // Dados pessoais (nome/tel/endereço) NÃO ficam no navegador.
+    // Retenção: 60 dias, máximo 20 entradas.
     try {
-      const pedidos = JSON.parse(localStorage.getItem('stylos_pedidos_site') || '[]');
-      pedidos.push({ ...dados, itens: carrinho, total, data: new Date().toISOString() });
+      const MAX_DIAS = 60;
+      const MAX_ITENS = 20;
+      const agora = Date.now();
+      let pedidos = JSON.parse(localStorage.getItem('stylos_pedidos_site') || '[]');
+      // remove entradas antigas
+      pedidos = pedidos.filter(p => p.t && (agora - p.t) < MAX_DIAS * 86400000);
+      pedidos.push({
+        n: numPedido,            // número do pedido
+        t: agora,                // timestamp
+        v: total,                // valor total
+        q: carrinho.length       // qtd de itens distintos
+      });
+      // mantém só as últimas N entradas
+      if (pedidos.length > MAX_ITENS) pedidos = pedidos.slice(-MAX_ITENS);
       localStorage.setItem('stylos_pedidos_site', JSON.stringify(pedidos));
     } catch {}
 
