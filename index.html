@@ -60,7 +60,9 @@
     --branco: #FFFFFF;
     --cinza: #F0F9FF;
     --texto: #0F172A;
-    --sombra: 0 4px 20px rgba(0, 180, 216, 0.15);
+    --sombra: 0 2px 10px rgba(15, 23, 42, 0.06);
+    --sombra-md: 0 4px 18px rgba(15, 23, 42, 0.08);
+    --sombra-elev: 0 8px 26px rgba(15, 23, 42, 0.10);
   }
 
   html, body {
@@ -743,41 +745,38 @@
     background: #25D366;
     color: white;
     border: none;
-    padding: 16px 32px;
-    border-radius: 32px;
-    font-size: 17px;
+    padding: 14px 28px;
+    border-radius: 28px;
+    font-size: 16px;
     font-weight: 800;
     cursor: pointer;
     text-decoration: none;
     display: inline-flex;
     align-items: center;
-    gap: 10px;
-    box-shadow: 0 8px 24px rgba(37, 211, 102, 0.4);
-    transition: all 0.25s ease;
-    animation: pulseSoft 2.5s ease-in-out infinite;
+    gap: 8px;
+    box-shadow: 0 4px 14px rgba(37, 211, 102, 0.28);
+    transition: all 0.2s ease;
   }
   .slide-cta-primary:hover {
-    transform: translateY(-3px) scale(1.03);
-    box-shadow: 0 12px 32px rgba(37, 211, 102, 0.55);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(37, 211, 102, 0.42);
   }
   .slide-cta-secondary {
-    background: white;
+    background: rgba(255,255,255,0.96);
     color: var(--azul-deep);
-    border: 2px solid white;
-    padding: 14px 26px;
-    border-radius: 32px;
-    font-size: 16px;
+    border: none;
+    padding: 12px 22px;
+    border-radius: 28px;
+    font-size: 15px;
     font-weight: 700;
     cursor: pointer;
     text-decoration: none;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
     transition: all 0.2s;
   }
   .slide-cta-secondary:hover { background: transparent; color: white; transform: translateY(-2px); }
 
-  @keyframes pulseSoft {
-    0%, 100% { box-shadow: 0 8px 24px rgba(37, 211, 102, 0.4); }
-    50% { box-shadow: 0 8px 32px rgba(37, 211, 102, 0.7); }
-  }
 
   /* ===== DIFERENCIAIS (badges sob o hero) ===== */
   .diferenciais {
@@ -997,9 +996,9 @@
     text-decoration: none;
     box-shadow: 0 8px 24px rgba(37, 211, 102, 0.45);
     z-index: 999;
-    transition: transform 0.2s;
-    animation: floatPulse 2.5s ease-in-out infinite;
+    transition: transform 0.2s, box-shadow 0.2s;
   }
+  .wa-float:hover { transform: scale(1.06); box-shadow: 0 10px 28px rgba(37,211,102,0.55); }
   .wa-float:hover {
     transform: scale(1.1) rotate(8deg);
   }
@@ -1021,10 +1020,6 @@
   }
   .wa-float:hover .wa-float-label { opacity: 1; transform: translateX(0); }
 
-  @keyframes floatPulse {
-    0%, 100% { box-shadow: 0 8px 24px rgba(37, 211, 102, 0.45); }
-    50% { box-shadow: 0 8px 32px rgba(37, 211, 102, 0.8), 0 0 0 8px rgba(37, 211, 102, 0.15); }
-  }
 
   /* ===== FOOTER COLUNAS ===== */
   .footer-grid {
@@ -1131,111 +1126,194 @@
   }
   .toast.show { transform: translateX(-50%) translateY(0); }
 
-  /* ===== RESPONSIVO ===== */
-  @media (max-width: 600px) {
-    .slide h2 { font-size: 28px; }
-    .slide p { font-size: 15px; }
-    .slide-nav { width: 36px; height: 36px; font-size: 18px; }
-    .header-content { padding: 10px 14px; }
-    .logo { font-size: 18px; }
-    .logo img { width: 40px; height: 40px; }
-    .cart-btn { padding: 8px 14px; font-size: 13px; }
-    .hero { height: 480px; }
-    .slide h1, .slide h2 { font-size: 26px; padding: 0 8px; }
-    .slide p { font-size: 14px; padding: 0 12px; }
-    .slide-cta-primary { padding: 13px 22px; font-size: 15px; }
-    .slide-cta-secondary { padding: 11px 20px; font-size: 14px; }
-    .secao-titulo { font-size: 26px; }
-    .secao-sub { font-size: 15px; }
-    .cta-banner h2 { font-size: 26px; }
-    .cta-banner p { font-size: 15px; }
-    .cta-banner-btn { padding: 13px 24px; font-size: 15px; }
-    .como-funciona, .porque { padding: 44px 12px; }
-    .atendimento { padding: 44px 12px 30px; }
-    .atendimento-titulo { font-size: 24px; }
-    .wa-float { width: 52px; height: 52px; font-size: 24px; bottom: 16px; right: 16px; }
-    .wa-float-label { display: none; }
+  /* ===== Micro-animação fade-up premium (sutil) ===== */
+  @media (prefers-reduced-motion: no-preference) {
+    .fade-up { opacity: 0; transform: translateY(14px); transition: opacity .55s ease, transform .55s ease; }
+    .fade-up.in { opacity: 1; transform: none; }
+  }
 
-    /* ===== CTA Banner compactado ===== */
-    .cta-banner { padding: 28px 16px; }
+  /* ===== RESPONSIVO MOBILE (mobile-first compacto premium) ===== */
+  @media (max-width: 768px) {
+    /* HEADER mais compacto */
+    .header-content { padding: 9px 14px; }
+    .logo { font-size: 17px; gap: 10px; }
+    .logo img { width: 38px; height: 38px; border-radius: 10px; }
+    .logo-text .tag { font-size: 10px; letter-spacing: 2px; }
+    .cart-btn { padding: 8px 13px; font-size: 13px; border-radius: 22px; }
+    .cart-count { width: 19px; height: 19px; font-size: 11px; }
+
+    /* HERO compacto e impactante */
+    .hero { height: 420px; }
+    .slide { padding: 16px; }
+    .slide h1, .slide h2 { font-size: 25px; line-height: 1.12; margin-bottom: 10px; padding: 0 8px; }
+    .slide p { font-size: 14px; line-height: 1.4; margin-bottom: 14px; padding: 0 8px; }
+    .slide-cta-group { gap: 8px; margin-top: 12px; }
+    .slide-cta-primary { padding: 12px 22px; font-size: 14px; box-shadow: 0 3px 10px rgba(37,211,102,0.25); }
+    .slide-cta-secondary { padding: 10px 18px; font-size: 13px; }
+    .slide-nav { width: 34px; height: 34px; font-size: 16px; }
+    .slide-prev { left: 8px; }
+    .slide-next { right: 8px; }
+    .slide-dots { bottom: 14px; gap: 7px; }
+    .dot { width: 8px; height: 8px; }
+
+    /* DIFERENCIAIS: scroll horizontal premium estilo app */
+    .diferenciais { padding: 16px 0 14px; }
+    .diferenciais-grid {
+      grid-template-columns: none;
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      padding: 4px 14px 8px;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .diferenciais-grid::-webkit-scrollbar { display: none; }
+    .dif-item {
+      flex: 0 0 78%;
+      max-width: 78%;
+      scroll-snap-align: start;
+      background: white;
+      border: 1px solid #E0F7FA;
+      border-radius: 14px;
+      padding: 12px;
+      box-shadow: var(--sombra);
+      flex-direction: row;
+      align-items: center;
+      gap: 10px;
+      text-align: left;
+    }
+    .dif-icon { width: 36px; height: 36px; font-size: 17px; flex-shrink: 0; }
+    .dif-text { font-size: 13px; line-height: 1.25; }
+    .dif-text span { display: block; font-size: 11.5px; line-height: 1.35; margin-top: 3px; color: #64748b; font-weight: 500; }
+
+    /* SECTION HEADERS compactos */
+    .secao-header { margin-bottom: 18px; }
+    .secao-eyebrow { font-size: 10.5px; padding: 5px 11px; letter-spacing: 1.5px; margin-bottom: 8px; }
+    .secao-titulo { font-size: 22px; line-height: 1.15; margin-bottom: 6px; }
+    .secao-sub { font-size: 13.5px; line-height: 1.4; }
+
+    /* COMO FUNCIONA / PRODUTOS para limpeza: 2 cols compactos */
+    .como-funciona { padding: 34px 14px; }
+    .etapas-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 10px; }
+    .etapa-card {
+      padding: 13px 12px;
+      border-radius: 13px;
+      text-align: left;
+      box-shadow: var(--sombra);
+      border: 1px solid #EBF4FA;
+      display: flex;
+      flex-direction: column;
+    }
+    .etapa-card:hover { transform: none; box-shadow: var(--sombra); }
+    .etapa-numero { width: 28px; height: 28px; font-size: 12.5px; margin-bottom: 8px; box-shadow: 0 2px 6px rgba(0,119,182,0.18); }
+    .etapa-titulo { font-size: 13.5px; line-height: 1.2; margin-bottom: 3px; font-weight: 800; }
+    .etapa-desc { font-size: 12px; line-height: 1.35; color: #64748b; }
+
+    /* POR QUE ESCOLHER: 2x2 premium com descrição visível */
+    .porque { padding: 32px 14px; }
+    .porque-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 10px; }
+    .porque-card {
+      padding: 18px 12px 16px;
+      border-radius: 14px;
+      box-shadow: var(--sombra);
+      border: 1px solid #EBF4FA;
+    }
+    .porque-card:hover { transform: none; }
+    .porque-icone { width: 44px; height: 44px; font-size: 20px; margin: 0 auto 10px; box-shadow: 0 3px 10px rgba(0,119,182,0.18); }
+    .porque-titulo { font-size: 13px; line-height: 1.2; margin-bottom: 4px; }
+    .porque-desc { display: block; font-size: 11.5px; line-height: 1.35; }
+
+    /* CTA BANNER compacto premium */
+    .cta-banner { padding: 28px 18px; }
     .cta-banner::before { width: 220px; height: 220px; }
-    .cta-banner h2 { font-size: 21px; line-height: 1.2; margin-bottom: 8px; }
+    .cta-banner h2 { font-size: 21px; line-height: 1.18; margin-bottom: 8px; }
     .cta-br { display: inline; }
     .cta-banner p { font-size: 13.5px; line-height: 1.4; margin-bottom: 16px; max-width: 320px; }
-    .cta-banner-btn { padding: 11px 22px; font-size: 14px; border-radius: 24px; box-shadow: 0 3px 10px rgba(37,211,102,0.25); }
+    .cta-banner-btn { padding: 11px 24px; font-size: 14px; border-radius: 24px; box-shadow: 0 3px 10px rgba(37,211,102,0.25); }
 
-    /* ===== Footer 1 coluna mobile, alinhado à esquerda ===== */
+    /* BUSCA compacta */
+    .busca-wrapper { top: 56px; padding: 10px 14px 4px; }
+    .busca-input { font-size: 14px; padding: 10px 38px 10px 38px; border-radius: 24px; }
+    .busca-icon { left: 14px; font-size: 15px; }
+    .busca-clear { width: 24px; height: 24px; right: 7px; font-size: 13px; }
+
+    /* CATEGORIAS scroll horizontal */
+    .categorias-nav { top: 108px; padding: 10px 14px; }
+    .categorias-list { gap: 8px; flex-wrap: nowrap; overflow-x: auto; justify-content: flex-start; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+    .categorias-list::-webkit-scrollbar { display: none; }
+    .cat-btn { padding: 7px 16px; font-size: 13px; }
+
+    /* PRODUTOS CATÁLOGO: 2 cols equilibrados */
+    .produtos-section { padding: 24px 12px 30px; }
+    .categoria-titulo { font-size: 19px; margin: 22px 0 14px; padding-bottom: 6px; border-bottom-width: 2px; }
+    .produtos-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .produto-card { border-radius: 13px; box-shadow: var(--sombra); }
+    .produto-img { height: 124px; font-size: 36px; }
+    .produto-img .nome-mini { font-size: 10px; bottom: 6px; padding: 3px 8px; }
+    .produto-info { padding: 11px 10px 12px; }
+    .produto-codigo { font-size: 9px; letter-spacing: 1px; margin-bottom: 3px; }
+    .produto-nome { font-size: 12.5px; min-height: 32px; line-height: 1.25; margin-bottom: 4px; }
+    .produto-preco { font-size: 17px; margin-bottom: 9px; }
+    .produto-controles { gap: 6px; }
+    .qtd-controle { border-radius: 16px; }
+    .qtd-btn { width: 26px; height: 30px; font-size: 16px; }
+    .add-btn { font-size: 11.5px; padding: 8px 6px; border-radius: 16px; }
+
+    /* ATENDIMENTO: 3 cards compactos */
+    .atendimento { padding: 32px 14px 26px; }
+    .atendimento-titulo { font-size: 22px; }
+    .atendimento-sub { font-size: 13px; }
+    .atendimento-grid { grid-template-columns: repeat(3, 1fr); gap: 7px; margin-top: 14px; }
+    .info-card { padding: 13px 6px; border-radius: 12px; text-align: center; box-shadow: var(--sombra); }
+    .info-icon { font-size: 22px; margin-bottom: 5px; }
+    .info-label { font-size: 9px; letter-spacing: 0.8px; margin-bottom: 3px; }
+    .info-valor { font-size: 11.5px; line-height: 1.25; }
+    .info-cta { font-size: 10px; margin-top: 5px; }
+
+    /* FOOTER 1 col limpo */
     .footer-grid {
       grid-template-columns: 1fr;
-      gap: 22px;
-      padding: 32px 22px 22px;
+      gap: 20px;
+      padding: 30px 22px 18px;
       text-align: left;
     }
     .footer-col { padding: 0; }
-    .footer-col h4 { font-size: 13px; margin-bottom: 10px; letter-spacing: 1.3px; }
-    .footer-col p, .footer-col a { font-size: 14px; line-height: 1.55; }
-    .footer-col a { margin-bottom: 6px; word-break: keep-all; }
-    .footer-col p { margin-bottom: 6px; }
-    .footer-brand-text { margin-top: 6px; }
-    /* espaço extra no rodapé pro botão flutuante do WhatsApp não cobrir o copyright */
-    .footer-bottom { padding: 16px 20px 84px; font-size: 11.5px; }
+    .footer-col h4 { font-size: 12.5px; margin-bottom: 8px; letter-spacing: 1.3px; }
+    .footer-col p, .footer-col a { font-size: 13.5px; line-height: 1.55; }
+    .footer-col a { margin-bottom: 5px; word-break: keep-all; }
+    .footer-col p { margin-bottom: 5px; }
+    .footer-brand-text { font-size: 12.5px; margin-top: 4px; }
+    /* respiro pro botão flutuante WA não cobrir copyright */
+    .footer-bottom { padding: 14px 20px 80px; font-size: 11px; }
 
-    /* ----- Grids forçadas lado a lado no mobile ----- */
+    /* SEM RESULTADOS */
+    .sem-resultados { padding: 36px 18px; }
+    .sem-resultados-icone { font-size: 38px; }
+    .sem-resultados-titulo { font-size: 16px; }
 
-    /* Diferenciais: 4 badges em linha (versão compacta) */
-    .diferenciais { padding: 18px 8px; }
-    .diferenciais-grid { grid-template-columns: repeat(4, 1fr); gap: 6px; }
-    .dif-item { flex-direction: column; text-align: center; gap: 6px; padding: 4px 2px; }
-    .dif-icon { width: 38px; height: 38px; font-size: 18px; }
-    .dif-text { font-size: 11px; line-height: 1.15; }
-    .dif-text span { display: none; }
+    /* WA FLUTUANTE compacto */
+    .wa-float { width: 52px; height: 52px; font-size: 24px; bottom: 16px; right: 16px; box-shadow: 0 6px 18px rgba(37,211,102,0.4); }
+    .wa-float-label { display: none; }
+  }
 
-    /* Produtos para limpeza: 2 cards por linha, compactos e premium */
-    .secao-header { margin-bottom: 24px; }
-    .etapas-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 12px; }
-    .etapa-card {
-      padding: 14px 12px;
-      border-radius: 14px;
-      text-align: left;
-      display: flex;
-      flex-direction: column;
-      min-height: 0;
-    }
-    .etapa-card:hover { transform: none; box-shadow: 0 4px 14px rgba(0,119,182,0.10); }
-    .etapa-numero { width: 30px; height: 30px; font-size: 13px; margin-bottom: 8px; }
-    .etapa-titulo { font-size: 13.5px; line-height: 1.2; margin-bottom: 4px; font-weight: 800; }
-    .etapa-desc { font-size: 12px; line-height: 1.35; color: #64748b; }
-
-    /* Por que escolher a Stylos: 4 cards em linha */
-    .porque-grid { grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 12px; }
-    .porque-card { padding: 14px 6px; border-radius: 10px; }
-    .porque-card:hover { transform: none; }
-    .porque-icone { width: 40px; height: 40px; font-size: 18px; margin: 0 auto 8px; box-shadow: 0 4px 10px rgba(0,119,182,0.18); }
-    .porque-titulo { font-size: 11px; line-height: 1.15; margin-bottom: 4px; }
-    .porque-desc { display: none; }
-
-    /* Atendimento (Contato): 3 cards em linha */
-    .atendimento-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
-    .info-card { padding: 14px 6px; border-radius: 10px; text-align: center; }
-    .info-icon { font-size: 24px; margin-bottom: 6px; }
-    .info-label { font-size: 9.5px; letter-spacing: 1px; margin-bottom: 4px; }
-    .info-valor { font-size: 12px; line-height: 1.25; }
-    .info-cta { font-size: 10.5px; margin-top: 6px; }
-    .produtos-section { padding: 30px 14px; }
-    .categoria-titulo { font-size: 22px; }
-    .produtos-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
-    .produto-img { height: 130px; font-size: 40px; }
-    .produto-nome { font-size: 14px; }
-    .produto-preco { font-size: 18px; }
-    .add-btn { font-size: 11px; padding: 8px; }
-    .busca-wrapper { top: 60px; padding: 12px 14px 4px; }
-    .busca-input { font-size: 14px; padding: 11px 38px 11px 40px; }
-    .busca-icon { left: 14px; font-size: 16px; }
-    .busca-clear { width: 24px; height: 24px; right: 7px; font-size: 14px; }
-    .categorias-nav { top: 120px; padding: 10px 14px; }
-    .sem-resultados { padding: 44px 20px; }
-    .sem-resultados-icone { font-size: 44px; }
-    .sem-resultados-titulo { font-size: 17px; }
+  /* ===== Telas muito pequenas (≤360px - iPhone SE, Androids pequenos) ===== */
+  @media (max-width: 360px) {
+    .hero { height: 380px; }
+    .slide h1, .slide h2 { font-size: 22px; }
+    .slide p { font-size: 13px; }
+    .slide-cta-primary { padding: 11px 18px; font-size: 13px; }
+    .slide-cta-secondary { padding: 9px 15px; font-size: 12.5px; }
+    .secao-titulo { font-size: 20px; }
+    .etapa-titulo, .porque-titulo { font-size: 12.5px; }
+    .etapa-desc, .porque-desc { font-size: 11px; }
+    .produto-img { height: 110px; }
+    .produto-nome { font-size: 12px; min-height: 30px; }
+    .produto-preco { font-size: 16px; }
+    .cta-banner h2 { font-size: 19px; }
+    .info-label { font-size: 8.5px; }
+    .info-valor { font-size: 10.5px; }
+    .dif-item { flex: 0 0 84%; max-width: 84%; }
   }
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -2518,6 +2596,25 @@
       input.focus();
       renderProdutos();
     });
+  })();
+
+  /* ============================================
+     FADE-UP sutil ao entrar no viewport (premium app feel)
+     ============================================ */
+  (function(){
+    if (!('IntersectionObserver' in window)) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const seletor = '.etapa-card, .porque-card, .info-card, .dif-item, .cta-banner-container, .secao-header';
+    document.querySelectorAll(seletor).forEach(function(el, i){
+      el.classList.add('fade-up');
+      el.style.transitionDelay = Math.min(i * 40, 200) + 'ms';
+    });
+    const io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.fade-up').forEach(function(el){ io.observe(el); });
   })();
 
   /* ============================================
