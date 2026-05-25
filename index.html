@@ -2425,8 +2425,11 @@
       .slice(0, 40)
       .replace(/-+$/g, '');
   }
+  // Bump esta versão sempre que adicionar/trocar fotos do catálogo
+  // (força o navegador a baixar de novo, driblando cache de 1 ano do Netlify)
+  const PHOTO_VERSION = '2026-05-25-2';
   function imagemDoProduto(p) {
-    return `public/products/${p.id}-${slugify(p.nome)}.webp`;
+    return `public/products/${p.id}-${slugify(p.nome)}.webp?v=${PHOTO_VERSION}`;
   }
 
   const formatBRL = (v) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 2 });
