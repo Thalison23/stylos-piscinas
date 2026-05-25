@@ -197,6 +197,36 @@
   .logo-text { line-height: 1.1; }
   .logo-text .tag { font-size: 11px; color: var(--azul-piscina); letter-spacing: 3px; font-weight: 600; }
 
+  /* Container das ações do header (telefone + carrinho) */
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  /* Telefone clicável - acessível pra cliente mais velho/menos digital */
+  .header-tel {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: var(--azul-deep);
+    font-weight: 700;
+    font-size: 14px;
+    padding: 9px 14px;
+    border-radius: 30px;
+    background: white;
+    border: 1.5px solid #E0F2FE;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .header-tel:hover {
+    background: var(--azul-muito-claro);
+    border-color: var(--azul-piscina);
+    transform: translateY(-1px);
+  }
+  .header-tel-icon { font-size: 15px; }
+
   .cart-btn {
     background: var(--azul-piscina);
     color: white;
@@ -297,6 +327,23 @@
     max-width: 680px;
     z-index: 2;
     position: relative;
+  }
+  /* Eyebrow regional do slide 1 (sinaliza loja física local) */
+  .slide-eyebrow {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 700;
+    color: white;
+    background: rgba(255,255,255,0.16);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.25);
+    padding: 6px 14px;
+    border-radius: 999px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.2);
   }
   .slide h1, .slide h2 {
     font-size: 46px;
@@ -1167,6 +1214,26 @@
     letter-spacing: 0.2px;
   }
 
+  /* CTA único pro guia, redireciona pro catálogo real (não compete) */
+  .guia-cta-wrap { text-align: center; margin-top: 36px; }
+  .guia-cta {
+    display: inline-block;
+    background: var(--azul-piscina);
+    color: white;
+    text-decoration: none;
+    padding: 12px 26px;
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 15px;
+    box-shadow: 0 3px 12px rgba(0, 180, 216, 0.25);
+    transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+  }
+  .guia-cta:hover {
+    background: var(--azul-deep);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 119, 182, 0.3);
+  }
+
   /* ===== POR QUE ESCOLHER (Prova Social) ===== */
   .porque {
     background: white;
@@ -1511,7 +1578,15 @@
     .logo { font-size: 17px; gap: 10px; }
     .logo img { width: 38px; height: 38px; border-radius: 10px; }
     .logo-text .tag { font-size: 10px; letter-spacing: 2px; }
-    .cart-btn { padding: 8px 13px; font-size: 13px; border-radius: 22px; }
+    .header-actions { gap: 8px; }
+    /* Telefone: só ícone no mobile pra caber */
+    .header-tel { padding: 8px 11px; font-size: 0; }
+    .header-tel-icon { font-size: 16px; }
+    .header-tel-num { display: none; }
+    /* Carrinho: esconde label "Carrinho", fica só ícone + contador */
+    .cart-btn { padding: 8px 12px; font-size: 13px; border-radius: 22px; gap: 6px; }
+    .cart-btn-label { font-size: 0; }
+    .cart-btn-label::before { content: "🛒"; font-size: 16px; }
     .cart-count { width: 19px; height: 19px; font-size: 11px; }
 
     /* HERO compacto e impactante */
@@ -1522,6 +1597,7 @@
     .slide-cta-group { gap: 8px; margin-top: 10px; }
     .slide-cta-primary { padding: 12px 22px; font-size: 14px; box-shadow: 0 3px 10px rgba(37,211,102,0.25); }
     .slide-cta-secondary { padding: 10px 18px; font-size: 13px; }
+    .slide-eyebrow { font-size: 10px; padding: 4px 11px; letter-spacing: 1px; margin-bottom: 10px; }
     .slide-nav { width: 32px; height: 32px; font-size: 15px; opacity: 0.45; }
     .slide-prev { left: 10px; }
     .slide-next { right: 10px; }
@@ -1766,10 +1842,16 @@
         <div class="tag">PISCINAS · BAHIA</div>
       </div>
     </a>
-    <button class="cart-btn" onclick="abrirCarrinho()">
-      <span>🛒 Carrinho</span>
-      <span class="cart-count" id="cartCount">0</span>
-    </button>
+    <div class="header-actions">
+      <a href="tel:+5575982074073" class="header-tel" aria-label="Ligar para (75) 98207-4073">
+        <span class="header-tel-icon" aria-hidden="true">📞</span>
+        <span class="header-tel-num">(75) 98207-4073</span>
+      </a>
+      <button class="cart-btn" onclick="abrirCarrinho()">
+        <span class="cart-btn-label">🛒 Carrinho</span>
+        <span class="cart-count" id="cartCount">0</span>
+      </button>
+    </div>
   </div>
 </header>
 
@@ -1778,31 +1860,32 @@
   <div class="slides" id="slides">
     <div class="slide slide-1">
       <div class="slide-content">
-        <h1>Sua piscina sempre cristalina</h1>
-        <p>Produtos selecionados e atendimento direto pelo WhatsApp.</p>
+        <span class="slide-eyebrow">🏊 Conceição do Jacuípe · Bahia</span>
+        <h1>Sua piscina pronta pro mergulho ainda esta semana</h1>
+        <p>Cloro, algicida e tudo pra tratamento — entrega rápida e atendimento humano direto pelo WhatsApp.</p>
         <div class="slide-cta-group">
           <a href="https://wa.me/5575982074073?text=Ol%C3%A1%21%20Vim%20pelo%20site%20e%20gostaria%20de%20conhecer%20os%20produtos%20para%20limpeza%20e%20manuten%C3%A7%C3%A3o%20de%20piscina." target="_blank" rel="noopener noreferrer" class="slide-cta-primary">💬 Comprar pelo WhatsApp</a>
-          <a href="#produtos" class="slide-cta-secondary">Ver catálogo</a>
+          <a href="#produtos" class="slide-cta-secondary">Ver Catálogo</a>
         </div>
       </div>
     </div>
     <div class="slide slide-2">
       <div class="slide-content">
-        <h2>Atendimento que entende de piscina</h2>
-        <p>Te ajudamos a escolher o produto certo. Rápido e sem enrolação.</p>
+        <h2>Não sabe qual produto comprar? A gente te ajuda em 2 minutos.</h2>
+        <p>Você fala direto com quem entende de piscina. Sem call center, sem espera, sem enrolação.</p>
         <div class="slide-cta-group">
-          <a href="https://wa.me/5575982074073?text=Ol%C3%A1%21%20Vim%20pelo%20site%20e%20gostaria%20de%20conhecer%20os%20produtos%20para%20limpeza%20e%20manuten%C3%A7%C3%A3o%20de%20piscina." target="_blank" rel="noopener noreferrer" class="slide-cta-primary">💬 Falar com especialista</a>
-          <a href="#porque" class="slide-cta-secondary">Por que a Stylos</a>
+          <a href="https://wa.me/5575982074073?text=Ol%C3%A1%21%20Vim%20pelo%20site%20e%20preciso%20de%20ajuda%20pra%20escolher%20o%20produto%20certo%20pra%20minha%20piscina." target="_blank" rel="noopener noreferrer" class="slide-cta-primary">💬 Falar com especialista</a>
+          <a href="#produtos" class="slide-cta-secondary">Ver Catálogo</a>
         </div>
       </div>
     </div>
     <div class="slide slide-3">
       <div class="slide-content">
-        <h2>Linha completa para sua piscina</h2>
-        <p>Cloro, algicida e acessórios. Monte seu pedido em minutos.</p>
+        <h2>12 marcas referência num só lugar</h2>
+        <p>HTH, Hidroall, Genco, Sodramar, Q Clor e mais. Tudo o que sua piscina precisa, num só pedido.</p>
         <div class="slide-cta-group">
-          <a href="#produtos" class="slide-cta-primary">Ver Catálogo</a>
-          <a href="https://wa.me/5575982074073?text=Ol%C3%A1%21%20Vim%20pelo%20site%20e%20gostaria%20de%20conhecer%20os%20produtos%20para%20limpeza%20e%20manuten%C3%A7%C3%A3o%20de%20piscina." target="_blank" rel="noopener noreferrer" class="slide-cta-secondary">💬 Falar no WhatsApp</a>
+          <a href="https://wa.me/5575982074073?text=Ol%C3%A1%21%20Vim%20pelo%20site%20e%20gostaria%20de%20conhecer%20os%20produtos%20para%20limpeza%20e%20manuten%C3%A7%C3%A3o%20de%20piscina." target="_blank" rel="noopener noreferrer" class="slide-cta-primary">💬 Comprar pelo WhatsApp</a>
+          <a href="#produtos" class="slide-cta-secondary">Ver Catálogo</a>
         </div>
       </div>
     </div>
@@ -1886,51 +1969,48 @@
   <div id="produtosContainer"></div>
 </section>
 
-<!-- ===== PRODUTOS PARA LIMPEZA (educacional - categorias resumidas) ===== -->
-<section class="como-funciona" id="como-funciona" aria-label="Produtos para limpeza da piscina">
+<!-- ===== GUIA EDUCATIVO (orienta sem competir com catálogo) ===== -->
+<section class="como-funciona" id="como-funciona" aria-label="Guia rápido de tratamento da piscina">
   <div class="secao-container">
     <div class="secao-header">
-      <span class="secao-eyebrow">Linha Stylos</span>
-      <h2 class="secao-titulo">Produtos para limpeza da sua piscina</h2>
-      <p class="secao-sub">Tudo que você precisa para manter sua piscina limpa, cristalina e pronta para uso.</p>
+      <span class="secao-eyebrow">Guia rápido</span>
+      <h2 class="secao-titulo">Como manter sua piscina cristalina</h2>
+      <p class="secao-sub">Os 6 produtos básicos que toda piscina precisa — e quando usar cada um.</p>
     </div>
     <div class="etapas-grid">
       <div class="etapa-card">
         <div class="etapa-numero">1</div>
         <h3 class="etapa-titulo">Cloro</h3>
-        <p class="etapa-desc">Elimina bactérias e mantém a água protegida.</p>
-        <span class="etapa-preco">A partir de R$ 25</span>
+        <p class="etapa-desc">Elimina bactérias e impurezas. Use 2x por semana.</p>
       </div>
       <div class="etapa-card">
         <div class="etapa-numero">2</div>
         <h3 class="etapa-titulo">Algicida</h3>
-        <p class="etapa-desc">Previne e combate algas, deixando a água cristalina.</p>
-        <span class="etapa-preco">A partir de R$ 25</span>
+        <p class="etapa-desc">Previne algas e mantém a água cristalina. Aplicar 1x por semana.</p>
       </div>
       <div class="etapa-card">
         <div class="etapa-numero">3</div>
         <h3 class="etapa-titulo">Clarificante</h3>
-        <p class="etapa-desc">Decanta impurezas e clareia a água rapidamente.</p>
-        <span class="etapa-preco">A partir de R$ 22</span>
+        <p class="etapa-desc">Decanta impurezas e clareia rápido. Use quando a água estiver turva.</p>
       </div>
       <div class="etapa-card">
         <div class="etapa-numero">4</div>
         <h3 class="etapa-titulo">pH e alcalinidade</h3>
-        <p class="etapa-desc">Equilibra o pH para tratamento mais eficiente.</p>
-        <span class="etapa-preco">A partir de R$ 25</span>
+        <p class="etapa-desc">Equilibra a água pra o cloro agir melhor. Cheque toda semana.</p>
       </div>
       <div class="etapa-card">
         <div class="etapa-numero">5</div>
         <h3 class="etapa-titulo">Acessórios</h3>
-        <p class="etapa-desc">Peneiras, escovas e aspiradores pra limpar fácil.</p>
-        <span class="etapa-preco">A partir de R$ 15</span>
+        <p class="etapa-desc">Peneiras, escovas e aspiradores. A base da limpeza física.</p>
       </div>
       <div class="etapa-card">
         <div class="etapa-numero">6</div>
         <h3 class="etapa-titulo">Testes</h3>
-        <p class="etapa-desc">Mede cloro, pH e alcalinidade com precisão.</p>
-        <span class="etapa-preco">A partir de R$ 10</span>
+        <p class="etapa-desc">Mede cloro, pH e alcalinidade. Faça antes de cada tratamento.</p>
       </div>
+    </div>
+    <div class="guia-cta-wrap">
+      <a href="#produtos" class="guia-cta">→ Ver tudo isso no catálogo</a>
     </div>
   </div>
 </section>
