@@ -4,6 +4,8 @@
   "private": true,
   "description": "Site da Stylos Piscinas - Functions para upload de cupom PDF",
   "dependencies": {
-    "@netlify/blobs": "^8.1.0"
+    "@netlify/blobs": "^8.1.0",
+    "puppeteer": "^25.0.4",
+    "sharp": "^0.34.5"
   }
 }
