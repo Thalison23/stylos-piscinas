@@ -381,16 +381,13 @@
 
   /* ===== BUSCA ===== */
   .busca-wrapper {
-    background: white;
-    padding: 18px 20px 6px;
-    position: sticky;
-    top: 72px;
-    z-index: 51;
-    box-shadow: 0 1px 0 #E0F7FA;
+    background: transparent;
+    padding: 0;
+    margin: 14px auto 20px;
+    max-width: 720px;
   }
   .busca-box {
-    max-width: 720px;
-    margin: 0 auto;
+    width: 100%;
     position: relative;
     display: flex;
     align-items: center;
@@ -478,20 +475,17 @@
 
   /* ===== CATEGORIAS ===== */
   .categorias-nav {
-    background: white;
-    padding: 14px 20px;
-    box-shadow: var(--sombra);
+    background: transparent;
+    padding: 0;
+    margin-top: 4px;
     overflow-x: auto;
-    position: sticky;
-    top: 142px;
-    z-index: 50;
   }
 
   .categorias-list {
-    max-width: 1200px;
+    max-width: 720px;
     margin: 0 auto;
     display: flex;
-    gap: 12px;
+    gap: 10px;
     justify-content: center;
     flex-wrap: wrap;
   }
@@ -512,7 +506,11 @@
   .cat-btn.active { background: var(--azul-piscina); color: white; }
 
   /* ===== PRODUTOS ===== */
-  .produtos-section { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+  .produtos-section { max-width: 1200px; margin: 0 auto; padding: 56px 20px 40px; }
+
+  /* Header do catálogo - hierarquia mais compacta com filtros/busca */
+  .catalogo-header { margin-bottom: 22px; }
+  .catalogo-header + .categorias-nav { margin-top: 0; }
 
   .categoria-titulo {
     font-size: 28px;
@@ -811,6 +809,44 @@
 
   .form-row textarea { resize: vertical; min-height: 50px; }
 
+  /* Agrupa blocos relacionados (dados pessoais, endereço, pagamento, obs) */
+  .form-group { margin-bottom: 18px; }
+  .form-group:last-child { margin-bottom: 0; }
+
+  .form-group-label {
+    font-size: 11px;
+    color: var(--azul-deep);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid rgba(0, 119, 182, 0.12);
+  }
+
+  /* Duo: dois campos lado a lado (Bairro/Cidade) */
+  .form-row-duo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .form-row-duo:last-child { margin-bottom: 0; }
+  .form-row-duo .form-row { margin-bottom: 0; }
+
+  /* Rua + Número: rua maior, número estreito */
+  .form-row-duo--rua-num {
+    grid-template-columns: 1fr 90px;
+  }
+
+  .form-hint {
+    display: block;
+    font-size: 11.5px;
+    color: #94a3b8;
+    margin-top: 5px;
+    line-height: 1.35;
+  }
+
   .total-row {
     display: flex; justify-content: space-between; align-items: center;
     margin-bottom: 12px;
@@ -963,12 +999,12 @@
   /* ===== MARCAS PARCEIRAS (logo wall premium) ===== */
   .marcas {
     background: white;
-    padding: 36px 20px;
+    padding: 34px 20px 38px;
     border-top: 1px solid #EBF4FA;
     border-bottom: 1px solid #EBF4FA;
   }
   .marcas-container {
-    max-width: 1200px;
+    max-width: 1100px;
     margin: 0 auto;
     text-align: center;
   }
@@ -983,25 +1019,30 @@
   .marcas-grid {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
-    gap: 24px;
+    column-gap: 12px;
+    row-gap: 18px;
     align-items: center;
     justify-items: center;
+  }
+  /* Tablet: 4 colunas pra não apertar */
+  @media (max-width: 1024px) and (min-width: 769px) {
+    .marcas-grid { grid-template-columns: repeat(4, 1fr); column-gap: 14px; row-gap: 20px; }
   }
   .marca-item {
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 8px;
+    padding: 4px;
   }
   .marca-item img {
     max-width: 100%;
-    max-height: 56px;
+    max-height: 68px;
     width: auto;
     height: auto;
     object-fit: contain;
-    filter: grayscale(1) opacity(0.65);
-    transition: filter 0.3s ease, transform 0.3s ease;
+    filter: grayscale(1) opacity(0.7);
+    transition: filter 0.35s ease, transform 0.35s ease;
   }
   .marca-item:hover img {
     filter: grayscale(0) opacity(1);
@@ -1564,20 +1605,21 @@
     .cta-banner p { font-size: 13.5px; line-height: 1.4; margin-bottom: 16px; max-width: 320px; }
     .cta-banner-btn { padding: 11px 24px; font-size: 14px; border-radius: 24px; box-shadow: 0 3px 10px rgba(37,211,102,0.25); }
 
-    /* BUSCA compacta */
-    .busca-wrapper { top: 56px; padding: 10px 14px 4px; }
+    /* BUSCA compacta - dentro do catálogo, próxima dos produtos */
+    .busca-wrapper { margin: 10px 14px 16px; padding: 0; }
     .busca-input { font-size: 14px; padding: 10px 38px 10px 38px; border-radius: 24px; }
     .busca-icon { left: 14px; font-size: 15px; }
     .busca-clear { width: 24px; height: 24px; right: 7px; font-size: 13px; }
 
-    /* CATEGORIAS scroll horizontal */
-    .categorias-nav { top: 108px; padding: 10px 14px; }
+    /* CATEGORIAS scroll horizontal - logo abaixo do header */
+    .categorias-nav { padding: 0 14px; margin-top: 0; }
     .categorias-list { gap: 8px; flex-wrap: nowrap; overflow-x: auto; justify-content: flex-start; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
     .categorias-list::-webkit-scrollbar { display: none; }
     .cat-btn { padding: 7px 16px; font-size: 13px; }
 
     /* PRODUTOS CATÁLOGO: 2 cols equilibrados */
-    .produtos-section { padding: 24px 12px 30px; }
+    .produtos-section { padding: 32px 12px 30px; }
+    .catalogo-header { margin-bottom: 14px; }
     .categoria-titulo { font-size: 19px; margin: 22px 0 14px; padding-bottom: 6px; border-bottom-width: 2px; }
     .produtos-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
     .produto-card { border-radius: 13px; box-shadow: var(--sombra); }
@@ -1617,12 +1659,12 @@
     .wa-float { width: 52px; height: 52px; font-size: 24px; bottom: 16px; right: 16px; box-shadow: 0 6px 18px rgba(37,211,102,0.4); }
     .wa-float-label { display: none; }
 
-    /* MARCAS: 3x2 no mobile (em vez de 6 amassadas) */
-    .marcas { padding: 24px 16px; }
+    /* MARCAS: 3 colunas no mobile (12 logos = 3x4) */
+    .marcas { padding: 24px 12px 28px; }
     .marcas-titulo { font-size: 11px; letter-spacing: 1.5px; margin-bottom: 16px; }
-    .marcas-grid { grid-template-columns: repeat(3, 1fr); gap: 14px; }
-    .marca-item { padding: 4px; }
-    .marca-item img { max-height: 44px; filter: grayscale(1) opacity(0.75); }
+    .marcas-grid { grid-template-columns: repeat(3, 1fr); column-gap: 8px; row-gap: 14px; }
+    .marca-item { padding: 2px; }
+    .marca-item img { max-height: 52px; filter: grayscale(1) opacity(0.78); }
 
     /* CARRINHO mobile premium estilo bottom-sheet feel */
     .carrinho { width: 100%; max-width: 100vw; right: -100%; }
@@ -1650,6 +1692,14 @@
     .form-row label { font-size: 10.5px; }
     .form-row input, .form-row textarea, .form-row select { padding: 11px 12px; }
     .form-row textarea { min-height: 60px; }
+    .form-group { margin-bottom: 20px; }
+    .form-group-label { font-size: 10.5px; margin-bottom: 10px; padding-bottom: 7px; }
+    /* Bairro/Cidade empilham no mobile pra não apertar */
+    .form-row-duo { grid-template-columns: 1fr; gap: 12px; margin-bottom: 12px; }
+    .form-row-duo .form-row { margin-bottom: 0; }
+    /* Rua + Nº continuam lado a lado (Nº é estreito mesmo) */
+    .form-row-duo--rua-num { grid-template-columns: 1fr 78px; gap: 8px; }
+    .form-hint { font-size: 11px; }
   }
 
   /* ===== Telas muito pequenas (≤360px - iPhone SE, Androids pequenos) ===== */
@@ -1789,39 +1839,44 @@
       <div class="marca-item"><img src="imagens/hisdroall.webp" alt="Hidroall" loading="lazy" width="160" height="80"></div>
       <div class="marca-item"><img src="imagens/sodramar.webp" alt="Sodramar" loading="lazy" width="160" height="80"></div>
       <div class="marca-item"><img src="imagens/netuno.webp" alt="Netuno" loading="lazy" width="160" height="80"></div>
+      <div class="marca-item"><img src="imagens/Genco.webp" alt="Genco" loading="lazy" width="160" height="80"></div>
+      <div class="marca-item"><img src="imagens/Propool.webp" alt="Propool" loading="lazy" width="160" height="80"></div>
+      <div class="marca-item"><img src="imagens/Pace.webp" alt="Pace" loading="lazy" width="160" height="80"></div>
+      <div class="marca-item"><img src="imagens/Atcllor.webp" alt="AT Clor" loading="lazy" width="160" height="80"></div>
+      <div class="marca-item"><img src="imagens/Rhofer.webp" alt="Rhofer" loading="lazy" width="160" height="80"></div>
+      <div class="marca-item"><img src="imagens/Suall.webp" alt="Suall" loading="lazy" width="160" height="80"></div>
     </div>
   </div>
 </section>
 
-<!-- ===== BUSCA ===== -->
-<div class="busca-wrapper" role="search">
-  <div class="busca-box">
-    <span class="busca-icon" aria-hidden="true">🔍</span>
-    <input
-      type="search"
-      id="buscaInput"
-      class="busca-input"
-      placeholder="Buscar produto por nome ou código..."
-      aria-label="Buscar produto"
-      autocomplete="off"
-      maxlength="60"
-      enterkeyhint="search">
-    <button type="button" id="buscaClear" class="busca-clear" aria-label="Limpar busca">×</button>
-  </div>
-</div>
-
-<!-- ===== CATEGORIAS NAV ===== -->
-<nav class="categorias-nav" aria-label="Filtros de categoria">
-  <div class="categorias-list" id="categoriasList"></div>
-</nav>
-
-<!-- ===== PRODUTOS (catalogo movido pra cima - conversao) ===== -->
+<!-- ===== CATÁLOGO (header → filtros → busca → produtos) ===== -->
 <section class="produtos-section" id="produtos" aria-label="Catálogo de produtos para piscina">
-  <div class="secao-header" style="margin-bottom:24px">
+  <div class="secao-header catalogo-header">
     <span class="secao-eyebrow">Catálogo</span>
     <h2 class="secao-titulo">Produtos para sua piscina</h2>
     <p class="secao-sub">Químicos, equipamentos e acessórios selecionados. Monte seu pedido e envie pelo WhatsApp.</p>
   </div>
+
+  <nav class="categorias-nav" aria-label="Filtros de categoria">
+    <div class="categorias-list" id="categoriasList"></div>
+  </nav>
+
+  <div class="busca-wrapper" role="search">
+    <div class="busca-box">
+      <span class="busca-icon" aria-hidden="true">🔍</span>
+      <input
+        type="search"
+        id="buscaInput"
+        class="busca-input"
+        placeholder="Buscar produto por nome ou código..."
+        aria-label="Buscar produto"
+        autocomplete="off"
+        maxlength="60"
+        enterkeyhint="search">
+      <button type="button" id="buscaClear" class="busca-clear" aria-label="Limpar busca">×</button>
+    </div>
+  </div>
+
   <div id="produtosContainer"></div>
 </section>
 
@@ -1940,38 +1995,68 @@
     <!-- Formulário do cliente -->
     <div class="checkout-form" id="checkoutForm" style="display:none">
       <h4>📋 Seus Dados</h4>
-      <div class="form-row">
-        <label for="form-nome">Seu nome *</label>
-        <input type="text" id="form-nome" placeholder="João Silva" required maxlength="80" autocomplete="name" autocapitalize="words">
+
+      <div class="form-group">
+        <div class="form-row">
+          <label for="form-nome">Nome completo *</label>
+          <input type="text" id="form-nome" placeholder="Digite seu nome completo" required maxlength="80" autocomplete="name" autocapitalize="words">
+        </div>
+        <div class="form-row">
+          <label for="form-telefone">WhatsApp *</label>
+          <input type="tel" id="form-telefone" placeholder="(75) 98207-4073" required maxlength="16" autocomplete="tel" inputmode="tel" pattern="[\d\s\(\)\-\+]{10,20}" oninput="mascararTelefone(this)">
+        </div>
       </div>
-      <div class="form-row">
-        <label for="form-telefone">WhatsApp *</label>
-        <input type="tel" id="form-telefone" placeholder="(75) 98207-4073" required maxlength="16" autocomplete="tel" inputmode="tel" pattern="[\d\s\(\)\-\+]{10,20}" oninput="mascararTelefone(this)">
+
+      <div class="form-group">
+        <div class="form-group-label">Endereço de entrega *</div>
+        <div class="form-row-duo form-row-duo--rua-num">
+          <div class="form-row">
+            <label for="form-rua">Rua</label>
+            <input type="text" id="form-rua" placeholder="Rua / Avenida" required maxlength="120" autocomplete="address-line1" autocapitalize="words">
+          </div>
+          <div class="form-row">
+            <label for="form-numero">Número</label>
+            <input type="text" id="form-numero" placeholder="Nº" required maxlength="10" autocomplete="address-line2" inputmode="text">
+          </div>
+        </div>
+        <div class="form-row-duo">
+          <div class="form-row">
+            <label for="form-bairro">Bairro</label>
+            <input type="text" id="form-bairro" placeholder="Seu bairro" required maxlength="60" autocomplete="address-level3" autocapitalize="words">
+          </div>
+          <div class="form-row">
+            <label for="form-cidade">Cidade</label>
+            <input type="text" id="form-cidade" placeholder="Sua cidade" required maxlength="60" autocomplete="address-level2" autocapitalize="words">
+          </div>
+        </div>
       </div>
-      <div class="form-row">
-        <label for="form-endereco">Endereço de entrega *</label>
-        <input type="text" id="form-endereco" placeholder="Rua, número, bairro, cidade" required maxlength="200" autocomplete="street-address">
+
+      <div class="form-group">
+        <div class="form-row">
+          <label for="form-grupo">Tipo</label>
+          <select id="form-grupo" autocomplete="off">
+            <option value="Casa">Residência / Casa</option>
+            <option value="Condomínio">Condomínio</option>
+            <option value="Comercial">Hotel / Clube / Spa / Comercial</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label for="form-pagamento">Forma de pagamento *</label>
+          <select id="form-pagamento" required autocomplete="off">
+            <option value="">Selecione...</option>
+            <option value="Pix">Pix</option>
+            <option value="Cartão de crédito">Cartão de crédito</option>
+            <option value="Boleto">Boleto</option>
+          </select>
+        </div>
       </div>
-      <div class="form-row">
-        <label for="form-grupo">Tipo</label>
-        <select id="form-grupo" autocomplete="off">
-          <option value="Casa">Residência / Casa</option>
-          <option value="Condomínio">Condomínio</option>
-          <option value="Comercial">Hotel / Clube / Spa / Comercial</option>
-        </select>
-      </div>
-      <div class="form-row">
-        <label for="form-pagamento">Forma de pagamento *</label>
-        <select id="form-pagamento" required autocomplete="off">
-          <option value="">Selecione...</option>
-          <option value="Pix">Pix</option>
-          <option value="Cartão de crédito">Cartão de crédito</option>
-          <option value="Boleto">Boleto</option>
-        </select>
-      </div>
-      <div class="form-row">
-        <label for="form-obs">Observações</label>
-        <textarea id="form-obs" placeholder="Horário preferido, dúvidas..." maxlength="500"></textarea>
+
+      <div class="form-group">
+        <div class="form-row">
+          <label for="form-obs">Observações do pedido</label>
+          <textarea id="form-obs" placeholder="Ex.: horário de entrega, referência da casa ou dúvidas." maxlength="500"></textarea>
+          <span class="form-hint">Opcional. Conte qualquer detalhe que ajude na entrega.</span>
+        </div>
       </div>
     </div>
   </div>
@@ -2847,7 +2932,11 @@
 
     const nome = sanitizar(document.getElementById('form-nome').value, 80);
     const telefone = sanitizarTelefone(document.getElementById('form-telefone').value);
-    const endereco = sanitizar(document.getElementById('form-endereco').value, 200);
+    const rua = sanitizar(document.getElementById('form-rua').value, 120);
+    const numero = sanitizar(document.getElementById('form-numero').value, 10);
+    const bairro = sanitizar(document.getElementById('form-bairro').value, 60);
+    const cidade = sanitizar(document.getElementById('form-cidade').value, 60);
+    const endereco = `${rua}, ${numero} - ${bairro}, ${cidade}`;
     const grupo = sanitizar(document.getElementById('form-grupo').value, 40);
     const pagamento = sanitizar(document.getElementById('form-pagamento').value, 40);
     const observacoes = sanitizar(document.getElementById('form-obs').value, 500);
@@ -2862,9 +2951,24 @@
       document.getElementById('form-telefone').focus();
       return;
     }
-    if (!endereco || endereco.length < 10 || !/\d/.test(endereco)) {
-      alert('Informe o endereço completo de entrega (rua, número e bairro).');
-      document.getElementById('form-endereco').focus();
+    if (!rua || rua.length < 3) {
+      alert('Informe a rua / avenida da entrega.');
+      document.getElementById('form-rua').focus();
+      return;
+    }
+    if (!numero) {
+      alert('Informe o número do endereço.');
+      document.getElementById('form-numero').focus();
+      return;
+    }
+    if (!bairro || bairro.length < 2) {
+      alert('Informe o bairro.');
+      document.getElementById('form-bairro').focus();
+      return;
+    }
+    if (!cidade || cidade.length < 2) {
+      alert('Informe a cidade.');
+      document.getElementById('form-cidade').focus();
       return;
     }
     if (!pagamento) {
@@ -2999,7 +3103,10 @@
     mensagemPendenteWA = '';
     document.getElementById('form-nome').value = '';
     document.getElementById('form-telefone').value = '';
-    document.getElementById('form-endereco').value = '';
+    document.getElementById('form-rua').value = '';
+    document.getElementById('form-numero').value = '';
+    document.getElementById('form-bairro').value = '';
+    document.getElementById('form-cidade').value = '';
     document.getElementById('form-pagamento').value = '';
     document.getElementById('form-obs').value = '';
     renderProdutos();

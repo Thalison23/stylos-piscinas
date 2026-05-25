@@ -53,3 +53,7 @@ coverage/
 
 # Lock files locais (mantém só o do projeto)
 package-lock.json.bak
+
+# Artefatos gerados pelos scripts/ (regeneráveis)
+painel-manual.html
+relatorio-fotos.csv
