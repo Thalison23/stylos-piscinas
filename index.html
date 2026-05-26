@@ -2354,7 +2354,7 @@
     ['000199', 'ALGICIDA TOPAZIO MANUTENCAO 1L', 30.00, 'quimicos'],
     ['000200', 'DECANTADOR E CLARIFICANTE SAFIRA 2KG', 28.00, 'quimicos'],
     ['000201', 'BARRILHA CRISTAL 2KG', 35.00, 'quimicos'],
-    ['000203', 'CLORO TITANIUM TABLETES 200G', 10.00, 'quimicos'],
+    ['000203', 'CLORO TITANIUM TABLETES 200G RHOFER', 10.00, 'quimicos'],
     ['000204', 'HCL HYPO BALDE C/ 10KG', 300.00, 'quimicos'],
     ['000205', 'HCL PENTA TAB 200G', 10.00, 'quimicos'],
     ['000206', 'ALGICIDA DE CHOQUE HIDROALL', 40.00, 'quimicos'],
@@ -2490,7 +2490,7 @@
   }
   // Bump esta versão sempre que adicionar/trocar fotos do catálogo
   // (força o navegador a baixar de novo, driblando cache de 1 ano do Netlify)
-  const PHOTO_VERSION = '2026-05-26-1';
+  const PHOTO_VERSION = '2026-05-26-2';
   function imagemDoProduto(p) {
     return `public/products/${p.id}-${slugify(p.nome)}.webp?v=${PHOTO_VERSION}`;
   }
