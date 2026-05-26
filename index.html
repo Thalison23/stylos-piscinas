@@ -2495,7 +2495,7 @@
   }
   // Bump esta versão sempre que adicionar/trocar fotos do catálogo
   // (força o navegador a baixar de novo, driblando cache de 1 ano do Netlify)
-  const PHOTO_VERSION = '2026-05-26-3';
+  const PHOTO_VERSION = '2026-05-26-4';
   function imagemDoProduto(p) {
     return `public/products/${p.id}-${slugify(p.nome)}.webp?v=${PHOTO_VERSION}`;
   }
