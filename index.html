@@ -740,12 +740,24 @@
   }
 
   .item-img-mini {
-    width: 50px; height: 50px;
+    width: 56px; height: 56px;
     border-radius: 8px;
     display: flex; align-items: center; justify-content: center;
     color: white; font-size: 22px;
     flex-shrink: 0;
     margin-top: 2px;
+    position: relative;
+    overflow: hidden;
+  }
+  .item-img-mini img {
+    position: absolute;
+    inset: 0;
+    width: 100%; height: 100%;
+    object-fit: contain;
+    padding: 4px;
+    background: #ffffff;
+    border-radius: 8px;
+    z-index: 1;
   }
 
   .item-info { flex: 1; min-width: 0; }
@@ -2687,7 +2699,7 @@
 
     container.innerHTML = carrinho.map(item => `
       <div class="carrinho-item">
-        <div class="item-img-mini" style="background: ${item.cor}">${item.icon}</div>
+        <div class="item-img-mini" style="background: ${item.cor}">${item.icon}<img src="${imagemDoProduto(item)}" alt="${item.nome}" loading="lazy" onerror="this.remove()"></div>
         <div class="item-info">
           <div class="item-nome">${item.nome}</div>
           <div class="item-codigo">Cód. ${item.id}</div>
