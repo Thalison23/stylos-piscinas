@@ -4,7 +4,7 @@ import { getStore } from "@netlify/blobs";
  * Recebe o PDF do cupom + numero do pedido do site (multipart/form-data),
  * salva no Netlify Blobs e retorna a URL publica pra incluir no WhatsApp.
  *
- * URL final: https://stylos-piscinas.netlify.app/cupom/<numero>-<token>
+ * URL final: https://stylospiscinas.com.br/cupom/<numero>-<token>
  */
 export default async (req) => {
   // CORS basico (mesmo dominio, mas seguro deixar explicito)
