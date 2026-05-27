@@ -1845,6 +1845,8 @@
   <textarea name="observacoes"></textarea>
   <textarea name="pedido"></textarea>
   <input type="text" name="valor-estimado" />
+  <input type="url" name="cupom-url" />
+  <input type="url" name="crm-url" />
   <input type="file" name="cupom-pdf" />
   <input type="text" name="bot-field" />
 </form>
@@ -2286,7 +2288,7 @@
   const ENDERECO_LOJA = "Stylos — Limpeza e Manutenção de Piscinas";
   const HORARIO_ATENDIMENTO = "Seg a Sex 08h-17h · Sáb 08h-12h";
   const MAPS_URL = "https://maps.app.goo.gl/tXCJSr4kF6ZHM6pd8";
-  const CRM_URL = "https://courageous-stroopwafel-957991.netlify.app";
+  const CRM_URL = "https://stylos-crm.netlify.app/integracoes";
 
   /* ============================================
      📦 CATÁLOGO - extraído do relatório de estoque Stylos (20/05/2026)
@@ -2796,10 +2798,11 @@
     return msg;
   }
 
-  function montarPayloadCRM(dados) {
+  function montarPayloadCRM(dados, numPedido, cupomUrl) {
     const itens = carrinho.map(c => `${c.nome} (${c.qtd}x)`).join(', ');
     const total = carrinho.reduce((s, c) => s + (c.preco * c.qtd), 0);
     const payload = {
+      codigoPedido: numPedido,
       nome: dados.nome,
       telefone: dados.telefone.replace(/\D/g, ''),
       empresa: dados.endereco.split(',').slice(-2).join(',').trim() || dados.endereco,
@@ -2811,8 +2814,14 @@
       observacoes: dados.observacoes,
       grupo: dados.grupo,
       enderecoCompleto: dados.endereco,
+      pagamento: dados.pagamento,
+      cupomUrl: cupomUrl || '',
     };
     return btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
+  }
+
+  function montarUrlCRM(dados, numPedido, cupomUrl) {
+    return `${CRM_URL}?import=${montarPayloadCRM(dados, numPedido, cupomUrl)}`;
   }
 
   /* ============================================
@@ -2820,6 +2829,7 @@
      ============================================ */
   let pdfBlobPendente = null;
   let pdfFilenamePendente = '';
+  let urlCRMPendente = '';
 
   function gerarPDFCupom(dados, numPedido) {
     const { jsPDF } = window.jspdf;
@@ -3106,7 +3116,14 @@
       }
     }
 
-    // 3) Monta mensagem do WhatsApp (texto + link do cupom se disponivel)
+    // 3) Monta URL do CRM com payload base64 (Tai usa pra lançar a venda no CRM)
+    try {
+      urlCRMPendente = montarUrlCRM(dados, numPedido, cupomUrlPublica);
+    } catch (e) {
+      urlCRMPendente = '';
+    }
+
+    // 4) Monta mensagem do WhatsApp (texto + link do cupom se disponivel)
     mensagemPendenteWA = montarMensagemWhatsApp(dados, numPedido, cupomUrlPublica);
 
     // 4) Envia pro Netlify Forms COM o PDF anexado (notificacao por email pro dono)
@@ -3124,6 +3141,7 @@
       fd.append('pedido', pedidoTexto);
       fd.append('valor-estimado', formatBRL(total));
       if (cupomUrlPublica) fd.append('cupom-url', cupomUrlPublica);
+      if (urlCRMPendente) fd.append('crm-url', urlCRMPendente);
       if (pdfBlobPendente) {
         const pdfFile = new File([pdfBlobPendente], pdfFilenamePendente, { type: 'application/pdf' });
         fd.append('cupom-pdf', pdfFile);
