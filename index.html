@@ -2436,9 +2436,109 @@
     ['000195', 'HTH FITA TESTE 25UN TUBO', 45.00, 'acessorios'],
   ];
 
+  /* ============================================
+     NOMES DE EXIBIÇÃO PADRONIZADOS — formato: [PRODUTO] [MEDIDA] - [MARCA]
+     A marca vai sempre no FIM, separada por " - ". Produto vem primeiro,
+     depois peso/volume/medida, e a marca por último.
+     IMPORTANTE: produtosRaw[].nome (acima) é o nome ORIGINAL e NÃO deve mudar,
+     pois o arquivo da foto é gerado a partir dele (public/products/ID-slug.webp).
+     Para alterar o que o cliente vê (catálogo, carrinho, WhatsApp), edite AQUI.
+     Produtos sem marca conhecida não entram na lista (mostram o nome original).
+     ============================================ */
+  const NOMES_PADRAO = {
+    // QUÍMICOS - TRATAMENTO DA ÁGUA
+    '000004': 'REDUTOR ALCALINIDADE - HTH',
+    '000022': 'LIMPA BORDAS 1L - Q CLOR',
+    '000023': 'CLARIFICANTE 1L - Q CLOR',
+    '000044': 'BD SUPER ACAO 10KG - Q CLOR',
+    '000048': 'ELEVADOR ALCALINIDADE - HTH',
+    '000063': 'BARRILHA 2KG - Q CLOR',
+    '000064': 'SULFATO DE ALUMINIO - Q CLOR',
+    '000069': 'L. E.CLORO GRAN.BL 10KG MULTIPLA ACAO - GENCO',
+    '000071': 'SULFATO DE ALUMINIO 2KG - GENCO',
+    '000073': 'LIMPA BORDAS 1L - GENCO',
+    '000078': 'PH+ 2KG - HIDRO',
+    '000079': 'SULFATO DE ALUMINIO 2KG - HIDROALL',
+    '000080': 'LIMPA BORDA 1L - HIDROSAN',
+    '000086': '3 EM 1 BALDE 10KG - ATCLLORO',
+    '000090': 'LIMPA BORDA 1LT - ATCLLOR',
+    '000108': 'TRIPLA ACAO 10KG - SUPERCLOR',
+    '000109': 'T ACAO 1KG - SUPERCLOR',
+    '000110': 'ELEVADOR ALCALINIDADE 1L - HTH',
+    '000111': 'FLUTUADOR GRANDE 1,66KG - HTH',
+    '000112': 'CLARIFICA MAXFLOC 1L - HTH',
+    '000113': 'ULTRACLEAR 1L - HTH',
+    '000114': 'COMBATE BD 10KG - PACE',
+    '000115': 'ACAO TOTAL BD 10KG - PACE',
+    '000116': 'TRIPLA ACAO TABLETE 200G - PACE',
+    '000117': 'CLORO TRADICIONAL BD 10KG HIPOCLORITO - HTH',
+    '000127': 'ELEVADOR DE ALCALINIDADE 2KG - CLOR UP',
+    '000128': 'CLARIFICANTE 1L - HIDROALL',
+    '000130': 'ALCALINIZANTE GRANULADO - SUALL',
+    '000147': 'FLUTUADOR PEQUENO - HTH',
+    '000148': 'LIMPA BORDAS - HTH',
+    '000149': 'SOS AGUA DE POCO - HTH',
+    '000150': 'ALGICIDA CHOQUE - HTH',
+    '000152': 'CHOQUE 1 L - ATCLLOR',
+    '000157': 'ALGICIDA CHOQUE 1L - CLOR UP',
+    '000158': 'ALGICIDA DE MANUTENCAO - CLOR UP',
+    '000159': 'ALGICIDA DE MANUTENCAO - Q CLOR',
+    '000160': 'ELIMINA OLEOSIDADE - HTH',
+    '000161': 'PREVINE AGUA VERDE - HTH [INDISPONIVEL]',
+    '000174': 'ELEVADOR DE PH PC 1,5KG - HTH',
+    '000179': 'ALGICIDA DE CHOQUE - Q CLOR',
+    '000183': 'CLORO SMART BD 10KG - HTH',
+    '000196': 'CLORO AMETISTA 10KG - RHOFER',
+    '000199': 'ALGICIDA TOPAZIO MANUTENCAO 1L - RHOFER',
+    '000200': 'DECANTADOR E CLARIFICANTE SAFIRA 2KG - RHOFER',
+    '000201': 'BARRILHA CRISTAL 2KG - RHOFER',
+    '000203': 'CLORO TITANIUM TABLETES 200G - RHOFER',
+    '000204': 'HYPO BALDE C/ 10KG - HCL',
+    '000205': 'PENTA TAB 200G - HCL',
+    '000206': 'ALGICIDA DE CHOQUE - HIDROALL',
+
+    // EQUIPAMENTOS
+    '000012': 'ASPIRADOR JUMBO 3 RODAS - NETUNO',
+    '000082': 'RODO ASPIRADOR 03 RODAS JUMBO LIMP - SODRAMAR',
+    '000093': 'CLORADOR FLUTUADOR - NETUNO',
+    '000151': 'AREIA DE QUARTZO PARA FILTRO DE PISCINAS 20KG - PEDRAS ALTAS',
+
+    // ACESSÓRIOS
+    '000014': 'CABO TELESC.3M ESTRIADO - NETUNO',
+    '000017': 'PENEIRA METALICA - NETUNO',
+    '000081': 'PENEIRA CATA FOLHA C/ PA - SODRAMAR',
+    '000083': 'ADAPTADOR LUVA PLASTICA 1.1/2 POL. - SODRAMAR',
+    '000084': 'ESCOVA NYLON CURVA (44CM) - SODRAMAR',
+    '000085': 'CABO ALUM TELESC 5,0 M C/ MANOPLA DE APOIO - SODRAMA',
+    '000099': 'CABO TELES 5M - NETUNO',
+    '000103': 'ESCOVA CURVA - NETUNO',
+    '000168': 'CABO TELESC. 6,M ESTRIADO - NETUNO',
+    '000185': 'CABO TELESC. 4 M ESTRIADO - NETUNO',
+    '000194': 'CABO TELESC. 5,M ESTRIADO - NETUNO',
+    '000039': 'TE 90 SOLD 50 MM - TIGRE',
+    '000042': 'UNIAO SOLD 50 MM - TIGRE',
+    '000060': 'KIT TESTE ALCALINIDADE (ESTOJO) - QCLOR',
+    '000061': 'REAGENTE CLORO - QUIMIL',
+    '000062': 'REAGENTE PH - QUIMIL',
+    '000095': 'EMENDA MANGUEIRA - HERBINJECT',
+    '000098': 'ADAPTADOR ROSCA FINA - NETUNO',
+    '000100': 'ESTOJO TESTE - NETUNO',
+    '000102': 'SOLUCÃO A - VERMELHO FENOL - NETUNO',
+    '000104': 'CONJUNTO TRAVA RAPIDA CABO - NETUNO',
+    '000129': 'PASSE LIMP - NETUNO',
+    '000135': 'KIT TESTE 3 EM 1 PH/CL/AT - NETUNO',
+    '000137': 'FITA TESTE 5 EM 1 - SUALL',
+    '000162': 'LUVA PLASTICA PARA DA PRATIC 50MM - SODRAMAR',
+    '000170': 'CABINHO DO ASPIRADOR COM CLIP - NETUNO',
+    '000171': 'CLIP EM V - MOSCA - NETUNO',
+    '000172': 'PINO DE FIXACAO DO CABO - NETUNO',
+    '000195': 'FITA TESTE 25UN TUBO - HTH',
+  };
+
   const produtos = produtosRaw.map((p, i) => ({
     id: p[0],
-    nome: p[1],
+    nome: NOMES_PADRAO[p[0]] || p[1],   // nome de exibição padronizado (fallback: original)
+    nomeImg: p[1],                       // nome ORIGINAL — base do arquivo da foto, NÃO mexer
     preco: p[2],
     cat: p[3],
     icon: pickIcon(p[1]),
@@ -2491,7 +2591,7 @@
   function produtoCasaBusca(p, termo) {
     if (!termo) return true;
     const haystack = normalizarBusca(
-      `${p.id} ${p.nome} ${p.cat} ${(p.desc || '')}`
+      `${p.id} ${p.nome} ${p.nomeImg || ''} ${p.cat} ${(p.desc || '')}`
     );
     // suporta múltiplas palavras (AND): "cloro 10" precisa achar os dois
     return termo.split(/\s+/).every(t => haystack.includes(t));
@@ -2511,7 +2611,8 @@
   // (força o navegador a baixar de novo, driblando cache de 1 ano do Netlify)
   const PHOTO_VERSION = '2026-05-26-4';
   function imagemDoProduto(p) {
-    return `public/products/${p.id}-${slugify(p.nome)}.webp?v=${PHOTO_VERSION}`;
+    // usa o nome ORIGINAL (nomeImg) — o arquivo da foto foi gerado a partir dele
+    return `public/products/${p.id}-${slugify(p.nomeImg || p.nome)}.webp?v=${PHOTO_VERSION}`;
   }
 
   const formatBRL = (v) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 2 });
